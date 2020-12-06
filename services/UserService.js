@@ -10,10 +10,17 @@ const UserService = {
 
     return user;
   },
-  createNewUser: async (newUserData) => {
+
+  createNewUser: async newUserData => {
     const newUser = await User.create(newUserData);
     return newUser;
-  }
+  },
+
+  findUserAndUpdate: async (userId, fullAddress) => {
+    await User.findByIdAndUpdate(userId, { address: fullAddress });
+  },
+
+
 };
 
 module.exports = UserService;

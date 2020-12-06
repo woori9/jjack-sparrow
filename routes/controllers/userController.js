@@ -31,3 +31,21 @@ exports.login = async (req, res, next) => {
     next(err);
   }
 }
+
+exports.registerAddress = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const { address, detail } = req.body;
+    const fullAddress = `${address} ${detail}`
+
+    await UserService.findUserAndUpdate(userId, fullAddress);
+
+    return res.status(201).json({
+      addressData: fullAddress
+    });
+  } catch (err) {
+    err.status = 401;
+
+    next(err);
+  }
+}
