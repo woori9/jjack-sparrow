@@ -1,6 +1,7 @@
 import {
   USER_LOGIN,
-  USER_LOGOUT
+  USER_LOGOUT,
+  REGISTER_ADDRESS
 } from '../constants/actionTypes';
 
 export const userLogin = userData => {
@@ -13,5 +14,12 @@ export const userLogin = userData => {
 export const userLogout = () => {
   return {
     type: USER_LOGOUT
+  };
+}
+
+export const registerAddress = address => {
+  return {
+    type: REGISTER_ADDRESS,
+    payload: address
   };
 }

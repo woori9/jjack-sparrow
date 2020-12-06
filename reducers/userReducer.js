@@ -1,6 +1,7 @@
 import {
   USER_LOGIN,
-  USER_LOGOUT
+  USER_LOGOUT,
+  REGISTER_ADDRESS
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -23,6 +24,14 @@ const userReducer = (state = initialState, action) => {
         isloggedIn: false,
         userData: null
       };
+    case REGISTER_ADDRESS:
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          address: action.payload
+        }
+      }
     default:
       return state;
   }
