@@ -1,7 +1,8 @@
 import {
   USER_LOGIN,
   USER_LOGOUT,
-  REGISTER_ADDRESS
+  REGISTER_ADDRESS,
+  ADD_USER_PET
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -31,7 +32,15 @@ const userReducer = (state = initialState, action) => {
           ...state.userData,
           address: action.payload
         }
-      }
+      };
+    case ADD_USER_PET:
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          pet: [...pet, action.payload]
+        }
+      };
     default:
       return state;
   }

@@ -4,9 +4,7 @@ import getEnvVars from '../environment';
 import * as Facebook from 'expo-facebook';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  userLogin
-} from '../actions';
+import { userLogin } from '../actions';
 import axiosInstance from '../config/axiosInstance';
 import asyncStorage from '@react-native-async-storage/async-storage';
 

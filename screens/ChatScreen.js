@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-const UserProfileScreen = () => {
+const ChatScreen = () => {
   return (
     <View>
-      <Text>User Profile Screen</Text>
+      <Text>Chat Screen</Text>
     </View>
-  );
+  )
 };
 
 const styles = StyleSheet.create({});
 
-export default UserProfileScreen;
+export default ChatScreen;

@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-const UserProfileScreen = () => {
+const MatchScreen = () => {
   return (
     <View>
-      <Text>User Profile Screen</Text>
+      <Text>Match Screen</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({});
 
-export default UserProfileScreen;
+export default MatchScreen;

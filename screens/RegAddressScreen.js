@@ -59,7 +59,7 @@ const RegAddressScreen = () => {
         </TouchableOpacity>
       </View>
     </ScrollView>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
