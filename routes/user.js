@@ -9,6 +9,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/login', userController.login);
 
-router.post('/:userId/address', verifyToken, userController.registerAddress)
+router.post('/:userId/address', verifyToken, userController.registerAddress);
+
+router.post('/:userId/pet', verifyToken, userController.registerPet);
 
 module.exports = router;

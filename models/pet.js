@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const petSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
   sex: {
     type: String,
     required: true
@@ -15,11 +20,15 @@ const petSchema = new Schema({
     required: true
   },
   weight: {
-    type: Number,
+    type: String,
     trim: true
   },
   description: {
     type: String
+  },
+  picture: {
+    type: String,
+    default: null
   }
 }, { timestamps: true });
 

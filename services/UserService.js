@@ -1,10 +1,10 @@
-const User = require('../models/User');
+const User = require('../models/user');
 
 const UserService = {
   getExistingUser: async (email) => {
-    const user = await User.findOne({ email: email });
-      // .populate('pet')
-      // .populate('match')
+    const user = await User.findOne({ email: email }, (err, data) => {console.log(err)})
+      .populate('pet')
+      .populate('match');
       // .populate('review')
       // .populate('calendar');
 
@@ -16,11 +16,17 @@ const UserService = {
     return newUser;
   },
 
-  findUserAndUpdate: async (userId, fullAddress) => {
+  updateUserAddress: async (userId, fullAddress) => {
     await User.findByIdAndUpdate(userId, { address: fullAddress });
   },
 
+  updateUserPet: async (userId, petId) => {
+    await User.updateOne({ _id: userId }, { $push: { 'pet': petId } });
+  },
 
+  findUserAndUpdateMatch: async (userId, matchData) => {
+    //await User.update({ _id: userId }, { $push { pet: petData  } });
+  }
 };
 
 module.exports = UserService;

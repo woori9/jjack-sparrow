@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const Pet = require('./pet');
+//const Pet = require('./pet');
 
 const userSchema = new Schema({
   email: {
@@ -21,7 +21,7 @@ const userSchema = new Schema({
   },
   pet: [{
     type: Schema.Types.ObjectId,
-    ref: Pet
+    ref: 'Pet'
   }],
   match: [{
     type: Schema.Types.ObjectId,
