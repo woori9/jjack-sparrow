@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, Platform } from 'react-native';
+import { View, Button, Platform, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment-timezone';
 
@@ -36,9 +36,9 @@ const DateAndTimePicker = ({ form, setForm }) => {
   return (
     <View>
       <View>
-        <Button onPress={showDatepicker} title='날짜' />
+        <Button style={{top: 20}} onPress={showDatepicker} title='날짜를 선택해주세요' />
       </View>
-      <View>
+      <View style={{display: 'none'}}>
         <Button onPress={showTimepicker} title='시간' />
       </View>
       {show && (
