@@ -27,6 +27,7 @@ const Navigation = () => {
   const Tabs = createBottomTabNavigator();
 
   const { isLoggedIn, isWaiting, userData } = useSelector(state => state.user);
+  console.log(userData)
 
   const MatchStackScreen = ({ navigator, navigation }) => (
     <MatchStack.Navigator>
@@ -62,21 +63,21 @@ const Navigation = () => {
           component={CalenderScreen}
           options={{
             tabBarLabel: 'Calender',
-            tabBarIcon: ({ color }) => <Ionicons name='calendar' size={28} color="green" />
+            tabBarIcon: ({ color }) => <Ionicons name='ios-calendar' size={28} color="green" />
           }} />
         <Tabs.Screen
           name="Match"
           component={temp}
           options={{
             tabBarLabel: 'Match',
-            tabBarIcon: ({ color }) => <Ionicons name='people' size={28} color="green" />
+            tabBarIcon: ({ color }) => <Ionicons name='md-people' size={28} color="green" />
           }} />
         <Tabs.Screen
           name="Chat"
           component={ChatScreen}
           options={{
             tabBarLabel: 'Chat',
-            tabBarIcon: ({ color }) => <Ionicons name='chatbubble-ellipses' size={28} color="green" />
+            tabBarIcon: ({ color }) => <Ionicons name='ios-chatboxes' size={28} color="green" />
           }} />
       </Tabs.Navigator>
     );
@@ -196,7 +197,7 @@ const Navigation = () => {
   };
 
   return isLoggedIn ?
-    (userData.address ? <HomeDrawer /> : <AddressStackScreen />) :
+    (userData.address.description ? <HomeDrawer /> : <AddressStackScreen />) :
     <AuthStackScreen />
 };
 

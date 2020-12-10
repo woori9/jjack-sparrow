@@ -1,7 +1,6 @@
-import { StyleSheet, Button, Image, View, Platform, Text, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { Ionicons } from '@expo/vector-icons';
 
 const verifyPermissions = async (target) => {
   if (target === 'cameraRoll') {
@@ -40,8 +39,6 @@ const pickImage = async () => {
     quality: 1,
   });
 
-  console.log("REWSULT???", result);
-  
   if (!result.cancelled) {
     return result.uri;
   }
@@ -56,8 +53,6 @@ const takePicture = async () => {
     aspect: [4, 3],
     quality: 0.5
   });
-
-  console.log("REWSULT???", result);
 
   if (!result.cancelled) {
     return result.uri;

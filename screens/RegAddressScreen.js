@@ -3,8 +3,9 @@ import { View, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from 
 import Postcode from 'react-native-daum-postcode';
 import { Dimensions } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux';
-import { registerAddress } from '../actions';
+import { updateAddress } from '../actions';
 import axiosInstance from '../config/axiosInstance';
+import { getLatAndLng } from '../config/api';
 
 const RegAddressScreen = () => {
   const dispatch = useDispatch();
@@ -13,20 +14,25 @@ const RegAddressScreen = () => {
   const [detail, setDetail] = useState('');
   const deviceWidth = Dimensions.get('window').width;
 
-  const RegisterAddress = async (address, detail) => {
+  const registerAddress = async (address, detail) => {
     if (!address || !detail) return alert('주소를 올바르게 입력해주세요');
+
+    const fullAddress = `${address} ${detail}`;
+    const location = await getLatAndLng(fullAddress);
+    const { documents } = location;
+    const lng = documents[0].x;
+    const lat = documents[0].y;
 
     try {
       const response = await axiosInstance.post(`user/${user.userData._id}/address`, {
-        address,
-        detail
+        fullAddress,
+        location: { lat, lng }
       });
 
-      const { addressData } = response.data;
       const status = response.status;
 
       if (status === 201) {
-        dispatch(registerAddress(addressData));
+        dispatch(updateAddress(fullAddress, { lat, lng }));
       }
     } catch (err) {
       console.log(err);
@@ -54,7 +60,7 @@ const RegAddressScreen = () => {
         </View>
         <TouchableOpacity
           style={styles.RegisterButton}
-          onPress={() => RegisterAddress(address, detail)}>
+          onPress={() => registerAddress(address, detail)}>
           <Text>Register</Text>
         </TouchableOpacity>
       </View>

@@ -1,10 +1,11 @@
 import {
   USER_LOGIN,
   USER_LOGOUT,
-  REGISTER_ADDRESS,
+  UPDATE_ADDRESS,
   CHECK_USER_STATUS,
   ADD_USER_PET,
-  ADD_USER_MATCH
+  ADD_USER_MATCH,
+  UPDATE_PENDING_MATCH
 } from '../constants/actionTypes';
 
 export const userLogin = userData => {
@@ -20,10 +21,13 @@ export const userLogout = () => {
   };
 };
 
-export const registerAddress = address => {
+export const updateAddress = (address, location) => {
   return {
-    type: REGISTER_ADDRESS,
-    payload: address
+    type: UPDATE_ADDRESS,
+    payload: {
+      address,
+      location
+    }
   };
 };
 
@@ -41,9 +45,15 @@ export const addUserPet = petData => {
 };
 
 export const addUserMatch = matchData => {
-  console.log("RE", matchData);
   return {
     type: ADD_USER_MATCH,
     payload: matchData
+  }
+};
+
+export const updatePendingMatch = pendingMatches => {
+  return {
+    type: UPDATE_PENDING_MATCH,
+    payload: pendingMatches
   }
 };

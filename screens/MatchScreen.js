@@ -92,7 +92,8 @@ const MatchScreen = ({ navigation }) => {
       }
 
       <Button onPress={showDatepicker} title='날짜 선택하기' />
-      <Button onPress={showTimepicker} title='시간 선택하기' />
+      <Button onPress={showTimepicker} title='시작 시간' />
+      <Button onPress={showTimepicker} title='끝나는 시간' />
       <CustomButton
         color="#FF6347"
         title="확인"
@@ -163,7 +164,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'pink',
-    marginTop: 40,
   },
   matchHeader: {
     flex: 1,
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   panel: {
     padding: 20,
     backgroundColor: 'pink',
-    paddingTop: 30,
+    paddingTop: 20,
   },
   header: {
     backgroundColor: 'red',

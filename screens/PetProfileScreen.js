@@ -128,7 +128,7 @@ const PetProfileScreen = () => {
                 </View>
                 :
                 <View style={styles.imageUpload}>
-                  <Ionicons name='camera' size={35} color='white' style={styles.cameraIcon} onPress={() => bottomSheetRef.current.snapTo(0)}></Ionicons>
+                  <Ionicons name='ios-camera' size={35} color='white' style={styles.cameraIcon} onPress={() => bottomSheetRef.current.snapTo(0)}></Ionicons>
                 </View>}
             </View>
           </View>

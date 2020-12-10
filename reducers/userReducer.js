@@ -1,7 +1,7 @@
 import {
   USER_LOGIN,
   USER_LOGOUT,
-  REGISTER_ADDRESS,
+  UPDATE_ADDRESS,
   ADD_USER_PET,
   CHECK_USER_STATUS,
   ADD_USER_MATCH
@@ -28,12 +28,16 @@ const userReducer = (state = initialState, action) => {
         isloggedIn: false,
         userData: null
       };
-    case REGISTER_ADDRESS:
+    case UPDATE_ADDRESS:
+      const { address, location } = action.payload;
       return {
         ...state,
         userData: {
           ...state.userData,
-          address: action.payload
+          address: {
+            description: address,
+            location
+          }
         }
       };
     case ADD_USER_PET:
@@ -55,7 +59,7 @@ const userReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        isWaiting: isWaiting,
+        isWaiting: false,//개발: 임시로 false 로 해놓음. isWaiting으로 바꾸기
         isMatched: isMatched
       };
     case ADD_USER_MATCH:

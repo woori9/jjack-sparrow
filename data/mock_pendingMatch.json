@@ -1,0 +1,32 @@
+[
+  {
+    "petsitter": null,
+    "customer": 1,
+    "status": 1,
+    "dateAndTime": "April 18th 2020 15:00"
+  },
+  {
+    "petsitter": null,
+    "customer": 2,
+    "status": 1,
+    "dateAndTime": "April 18th 2020 15:00"
+  },
+  {
+    "petsitter": null,
+    "customer": 3,
+    "status": 1,
+    "dateAndTime": "April 18th 2020 15:00"
+  },
+  {
+    "petsitter": null,
+    "customer": 4,
+    "status": 1,
+    "dateAndTime": "April 18th 2020 15:00"
+  },
+  {
+    "petsitter": null,
+    "customer": 5,
+    "status": 1,
+    "dateAndTime": "April 18th 2020 15:00"
+  }
+]
