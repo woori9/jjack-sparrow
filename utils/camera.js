@@ -40,7 +40,18 @@ const pickImage = async () => {
   });
 
   if (!result.cancelled) {
-    return result.uri;
+    const localUri = result.uri;
+    const filename = localUri.split('/').pop();
+    const match = /\.(\w+)$/.exec(filename);
+    const type = match ? `image/${match[1]}` : `image`;
+
+    const imageInfo = {
+      uri: result.uri,
+      filename: localUri.split('/').pop(),
+      type: type
+    };
+
+    return imageInfo;
   }
 };
 
@@ -55,7 +66,18 @@ const takePicture = async () => {
   });
 
   if (!result.cancelled) {
-    return result.uri;
+    const localUri = result.uri;
+    const filename = localUri.split('/').pop();
+    const match = /\.(\w+)$/.exec(filename);
+    const type = match ? `image/${match[1]}` : `image`;
+
+    const imageInfo = {
+      uri: result.uri,
+      filename: localUri.split('/').pop(),
+      type: type
+    };
+
+    return imageInfo;
   }
 };
 

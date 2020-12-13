@@ -3,18 +3,21 @@ import {
   USER_LOGOUT,
   UPDATE_ADDRESS,
   ADD_USER_PET,
-  CHECK_USER_STATUS,
-  ADD_USER_MATCH
+  ADD_USER_PENDING_MATCH,
+  CHECK_USER_MATCH_STATUS,
+  ADD_SUCCESFUL_MATCH,
+  DELETE_MY_PENDING_MATCH,
 } from '../constants/actionTypes';
 
 const initialState = {
   isLoggedIn: false,
-  isWaiting: false,
-  isMatched: false,
+  waitingMatch: [],
+  successMatch: [],
+  pastMatch: [],
   userData: null
 };
 
-const userReducer = (state = initialState, action) => {
+const user = (state = initialState, action) => {
   switch (action.type) {
     case USER_LOGIN:
       return {
@@ -23,11 +26,7 @@ const userReducer = (state = initialState, action) => {
         userData: action.payload
       };
     case USER_LOGOUT:
-      return {
-        ...state,
-        isloggedIn: false,
-        userData: null
-      };
+      return initialState;
     case UPDATE_ADDRESS:
       const { address, location } = action.payload;
       return {
@@ -50,30 +49,36 @@ const userReducer = (state = initialState, action) => {
           pet: [...pet, action.payload]
         }
       };
-    case CHECK_USER_STATUS:
-      const { match } = state.userData;
+    case CHECK_USER_MATCH_STATUS: //userData의 match는 처음 가져온 이후 업데이트 하지 않고 리덕스를 통해서 관리한다.
+      const match = action.payload;
       const pendingMatch = match.filter(item => item.status === 1);
       const successMatch = match.filter(item => item.status === 2);
-      const isWaiting = pendingMatch.length > 0 ? pendingMatch : false;
-      const isMatched = successMatch.length > 0 ? successMatch : false;
+      const pastMatch = match.filter(item => item.status === 3);
 
       return {
         ...state,
-        isWaiting: false,//개발: 임시로 false 로 해놓음. isWaiting으로 바꾸기
-        isMatched: isMatched
+        waitingMatch: pendingMatch,
+        successMatch: successMatch,
+        pastMatch: pastMatch
       };
-    case ADD_USER_MATCH:
+    case ADD_USER_PENDING_MATCH:
       return {
         ...state,
-        isWaiting: action.payload,
-        userData: {
-          ...state.userData,
-          match: [...state.userData.match, action.payload]
-        }
+        waitingMatch: [...state.waitingMatch, action.payload]
+      };
+    case ADD_SUCCESFUL_MATCH:
+      return {
+        ...state,
+        successMatch: [...state.successMatch, action.payload]
+      };
+    case DELETE_MY_PENDING_MATCH:
+      return {
+        ...state,
+        waitingMatch: state.waitingMatch.filter(pending => pending._id !== action.payload)
       };
     default:
       return state;
   }
 };
 
-export default userReducer;
+export default user;

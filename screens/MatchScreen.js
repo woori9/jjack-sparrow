@@ -1,20 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button, FlatList, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import BottomSheetScreen from '../components/BottomSheet';
 import CustomButton from '../components/CustomButton';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment-timezone';
 import { requestMatch } from '../config/api';
-import { addUserMatch } from '../actions';
+import { addUserPendingMatch } from '../actions';
+import { socket, matchSocket } from '../socket';
+import { addSuccessfulMatch, deleteMyPendingMatch } from '../actions';
 
 const MatchScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [showCurrentMatch, setshowCurrentMatch] = useState(true);
   const { userData } = useSelector(state => state.user);
-  const { isWaiting } = useSelector(state => state.user);
-  const { isMatched } = useSelector(state => state.user);
-  console.log("##", isWaiting)
+  const { waitingMatch } = useSelector(state => state.user);
+  const { successMatch } = useSelector(state => state.user);
+  const haveNoCurrentMatchAtAll = !waitingMatch.length && !successMatch.length;
 
   const bottomSheetRef = useRef();
 
@@ -22,7 +24,6 @@ const MatchScreen = ({ navigation }) => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [reservation, setReservation] = useState('');
-  console.log(reservation);
 
   useEffect(() => {
     const SeoulStandardDate = moment(date).tz("Asia/Seoul");
@@ -31,11 +32,59 @@ const MatchScreen = ({ navigation }) => {
     setReservation(newDate);
   }, [date]);
 
+  useEffect(() => {
+    socket.on('matching succeed', match => {//pet sitter가 응답해서 매칭에 성공했을 때. 그 상대방에게 옴
+
+      dispatch(deleteMyPendingMatch(match._id));
+      dispatch(addSuccessfulMatch(match));
+
+      Alert.alert(
+        "매칭이 성사되었습니다!",
+        "Pet sitter와 대화를 나누어보세요",
+        [
+          {
+            text: "나중에",
+            onPress: () => console.log("Ask me later"),
+            style: "cancel"
+          },
+          {
+            text: "대화하기",
+            onPress: () => navigation.navigate('Chat')
+          },
+        ],
+        { cancelable: false }
+      );
+      return () => socket.off();
+    });
+  }, []);
+
   const readyToMatch = (
     <View style={styles.matchContent}>
       <View style={styles.matchDescription}>
-        <Text>아직 매칭이 이루어지지 않았습니다.</Text>
-        <Text>지금 매칭을 시도해보세요.</Text>
+        {haveNoCurrentMatchAtAll ? (
+          <View>
+            <Text>아직 매칭이 이루어지지 않았습니다.</Text>
+            <Text>지금 매칭을 시도해보세요.</Text>
+          </View>
+        ) : (
+            <View>
+              <Text>매칭 된 것(파트너)과 대기중인 리스트 </Text>
+              <FlatList
+                keyExtractor={match => match._id}
+                data={[...successMatch, ...waitingMatch]}
+                renderItem={({ item }) => {
+                  //element === {item: 배열 안의 요소, index: #}
+                  if (item.petsitter) return <Text>매치가 이루짐.. 나중에 PEtsetter 넣기 </Text>;
+                  return (
+                    <View style={styles.waitingList}>
+                      <Text>{item.dateAndTime}</Text>
+                      <Text>대기중</Text>
+                    </View>
+                  )
+                }}
+              />
+            </View>
+          )}
       </View>
       <View style={styles.matchButtons}>
         <TouchableOpacity
@@ -53,15 +102,11 @@ const MatchScreen = ({ navigation }) => {
     </View>
   );
 
-  const showPartner = (
-    <Text>매칭 상대</Text>
-  );
-
   const pastMatch = (
     <Text>과거 매칭</Text>
   );
 
-  const matchContent = showCurrentMatch ? ( isMatched ? showPartner : readyToMatch ) : pastMatch;
+  const matchContent = showCurrentMatch ? readyToMatch : pastMatch;
 
   const renderInner = () => {
     return <View style={styles.panel}>
@@ -91,19 +136,21 @@ const MatchScreen = ({ navigation }) => {
         )
       }
 
-      <Button onPress={showDatepicker} title='날짜 선택하기' />
+      <Button onPress={showDatepicker} title='날짜 선택' />
       <Button onPress={showTimepicker} title='시작 시간' />
-      <Button onPress={showTimepicker} title='끝나는 시간' />
+      <Button onPress={() => console.log('몇 시간??')} title='얼마나?' />
       <CustomButton
         color="#FF6347"
         title="확인"
-        submitHandler={async() => {
-          if(isWaiting) return alert('이미 대기중입니다.');
+        submitHandler={async () => {
+          const newMatchRequest = await requestMatch(userData._id, reservation, userData.pet);
+          dispatch(addUserPendingMatch(newMatchRequest));//요청한 유저의 리덕스.. user redux pending match 업데이트
+          matchSocket.informNewPendingMatch(newMatchRequest);
+          bottomSheetRef.current.snapTo(1);
 
-          const newMatchRequest = await requestMatch(userData._id, reservation);
-          dispatch(addUserMatch(newMatchRequest));
           navigation.navigate('대기');
         }}
+        navigation={navigation}
       />
 
     </View>
@@ -124,8 +171,6 @@ const MatchScreen = ({ navigation }) => {
     setShow(true);
     setMode('time');
   };
-
-  console.log(date)
 
   return (
     <View style={styles.container}>
@@ -211,13 +256,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'skyblue'
   },
   matchDescription: {
-    flex: 1,
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white'
   },
   matchButtons: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -232,7 +277,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     backgroundColor: 'yellow',
-    padding: 30
+    padding: 10
   },
   panel: {
     padding: 20,
@@ -287,6 +332,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  waitingList: {
+    flex: 1,
+    flexDirection: 'row',
   }
 });
 

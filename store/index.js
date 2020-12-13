@@ -1,12 +1,13 @@
 import { createStore, combineReducers } from 'redux';
-import userReducer from '../reducers/userReducer';
-import matchReducer from '../reducers/matchReducer';
+import user from '../reducers/userReducer';
+import allPendingMatch from '../reducers/matchReducer';
+import initialSetting from '../reducers/initialReducer';
 
 const rootReducer = combineReducers({
-  user: userReducer,
-  pendingMatches: matchReducer
+  user,
+  allPendingMatch,
+  initialSetting
 });
 
 const store = createStore(rootReducer);
-
 export default store;

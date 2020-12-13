@@ -1,11 +1,12 @@
 import React from 'react';
 import PetProfileScreen from '../../screens/PetProfileScreen';
+import UserProfileScreen from '../../screens/UserProfileScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 
 const ProfileStack = createStackNavigator();
 
-const PetProfileStackScreen = ({ navigator, navigation }) => {
+export const PetProfileStackScreen = ({ navigator, navigation }) => {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
@@ -24,4 +25,22 @@ const PetProfileStackScreen = ({ navigator, navigation }) => {
   );
 };
 
-export default PetProfileStackScreen;
+export const UserProfileStackScreen = ({ navigator, navigation }) => {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen
+        name='내 프로필'
+        component={UserProfileScreen}
+        options={{
+          headerLeft: () => (
+            <Ionicons
+              name='ios-menu'
+              size={25}
+              onPress={() => navigation.openDrawer()}>
+            </Ionicons>)
+        }}
+      />
+    </ProfileStack.Navigator>
+  );
+};
+

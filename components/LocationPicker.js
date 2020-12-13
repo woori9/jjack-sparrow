@@ -29,8 +29,6 @@ const LocationPicker = () => {
     try {
       setIsLoading(true);
       const location = await Location.getCurrentPositionAsync({ timeout: 5000 });
-      console.log("@@@@@", location);
-      console.log(location.coords.latitude)
 
       setPickedLocation({
         lat: location.coords.latitude,

@@ -1,32 +1,95 @@
-[
-  {
-    "petsitter": null,
-    "customer": 1,
-    "status": 1,
-    "dateAndTime": "April 18th 2020 15:00"
+[{
+  "petsitter": null,
+  "customer": {
+    "_id": 1,
+    "pet": [{
+      "name": "올리브",
+      "species": "모란"
+    }],
+    "address": {
+      "description": "안양시 어딘가",
+      "location": {
+        "lat": 37.4055699682797,
+        "lng": 126.971472162356
+      }
+    }
   },
-  {
-    "petsitter": null,
-    "customer": 2,
-    "status": 1,
-    "dateAndTime": "April 18th 2020 15:00"
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+},
+{
+  "petsitter": null,
+  "customer": {
+    "_id": 2,
+    "pet": [{
+      "name": "머브",
+      "species": "모란"
+    }],
+    "address": {
+      "description": "과천시 어딘가",
+      "location": {
+        "lat": 37.4103294796877,
+        "lng": 126.972843321778
+      }
+    }
   },
-  {
-    "petsitter": null,
-    "customer": 3,
-    "status": 1,
-    "dateAndTime": "April 18th 2020 15:00"
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+},
+{
+  "petsitter": null,
+  "customer": {
+    "_id": 2,
+    "pet": [{
+      "name": "머브11",
+      "species": "모란"
+    }],
+    "address": {
+      "description": "동편마을4단지아파트",
+      "location": {
+        "lat": 37.408458,
+        "lng": 126.969206
+      }
+    }
   },
-  {
-    "petsitter": null,
-    "customer": 4,
-    "status": 1,
-    "dateAndTime": "April 18th 2020 15:00"
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+},
+{
+  "petsitter": null,
+  "customer": {
+    "_id": 2,
+    "pet": [{
+      "name": "머브22",
+      "species": "모란"
+    }],
+    "address": {
+      "description": "숲길",
+      "location": {
+        "lat": 37.410917,
+        "lng": 126.966600
+      }
+    }
   },
-  {
-    "petsitter": null,
-    "customer": 5,
-    "status": 1,
-    "dateAndTime": "April 18th 2020 15:00"
-  }
-]
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+},
+{
+  "petsitter": null,
+  "customer": {
+    "_id": 2,
+    "pet": [{
+      "name": "머브33",
+      "species": "모란"
+    }],
+    "address": {
+      "description": "일동로204번길",
+      "location": {
+        "lat": 37.405616,
+        "lng": 126.967735
+      }
+    }
+  },
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+}]

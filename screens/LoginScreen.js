@@ -1,13 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
-import { userLogin, checkUserStatus, userLogout } from '../actions';
-import { useSelector, useDispatch } from 'react-redux';
+import { userLogin, checkAddress, checkUserMatchStatus } from '../actions';
+import { useDispatch } from 'react-redux';
 import signInFacebook from '../config/auth';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const currentUser = useSelector(state => state.user);
-  console.log("^^", currentUser);
 
   return (
     <View style={styles.container}>
@@ -16,9 +14,17 @@ const LoginScreen = () => {
       <TouchableOpacity
         style={styles.login}
         onPress={async () => {
-          const userData = await signInFacebook();
-          dispatch(userLogin(userData));
-          dispatch(checkUserStatus());
+          const result = await signInFacebook();
+          if (!result) return alert('로그인을 다시 시도해주세요.');
+
+          if (result === 'NO EMAIL DATA') return alert('페이스북에 이메일 정보를 등록한 후에 이용해주세요.');
+
+          const { address, match } = result;
+
+          dispatch(userLogin(result));
+          dispatch(checkAddress(address.description));
+          dispatch(checkUserMatchStatus(match));
+
         }}>
         <Text>Press Here</Text>
       </TouchableOpacity>

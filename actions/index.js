@@ -1,11 +1,15 @@
 import {
   USER_LOGIN,
   USER_LOGOUT,
+  CHECK_ADDRESS,
   UPDATE_ADDRESS,
-  CHECK_USER_STATUS,
+  CHECK_USER_MATCH_STATUS,
   ADD_USER_PET,
-  ADD_USER_MATCH,
-  UPDATE_PENDING_MATCH
+  ADD_USER_PENDING_MATCH,
+  UPDATE_ALL_PENDING_MATCH,
+  DELETE_ONE_PENDING_MATCH,
+  ADD_SUCCESFUL_MATCH,
+  DELETE_MY_PENDING_MATCH
 } from '../constants/actionTypes';
 
 export const userLogin = userData => {
@@ -21,6 +25,13 @@ export const userLogout = () => {
   };
 };
 
+export const checkAddress = address => {
+  return {
+    type: CHECK_ADDRESS,
+    payload: address
+  };
+};
+
 export const updateAddress = (address, location) => {
   return {
     type: UPDATE_ADDRESS,
@@ -31,9 +42,10 @@ export const updateAddress = (address, location) => {
   };
 };
 
-export const checkUserStatus = () => {
+export const checkUserMatchStatus = userMatchData => {
   return {
-    type: CHECK_USER_STATUS
+    type: CHECK_USER_MATCH_STATUS,
+    payload: userMatchData
   };
 }
 
@@ -41,19 +53,40 @@ export const addUserPet = petData => {
   return {
     type: ADD_USER_PET,
     payload: petData
-  }
+  };
 };
 
-export const addUserMatch = matchData => {
+export const addUserPendingMatch = newPendingMatch => {
   return {
-    type: ADD_USER_MATCH,
-    payload: matchData
-  }
+    type: ADD_USER_PENDING_MATCH,
+    payload: newPendingMatch
+  };
 };
 
-export const updatePendingMatch = pendingMatches => {
+export const updateAllPendingMatch = pendingMatches => {
   return {
-    type: UPDATE_PENDING_MATCH,
+    type: UPDATE_ALL_PENDING_MATCH,
     payload: pendingMatches
-  }
+  };
+};
+
+export const deleteThePendingMatch = id => {
+  return {
+    type: DELETE_ONE_PENDING_MATCH,
+    payload: id
+  };
+};
+
+export const addSuccessfulMatch = match => {
+  return {
+    type: ADD_SUCCESFUL_MATCH,
+    payload: match
+  };
+};
+
+export const deleteMyPendingMatch = id => {
+  return {
+    type: DELETE_MY_PENDING_MATCH,
+    payload: id
+  };
 };

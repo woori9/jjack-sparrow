@@ -20,7 +20,7 @@ axiosInstance.interceptors.request.use(async config => {
 
   return config;
 }, (err) => {
-  console.log("AXIOSINSTANCE ERROR", err)}
+  console.log(err)}
 );
 
 export default axiosInstance;

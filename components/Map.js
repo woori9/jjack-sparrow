@@ -1,19 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, TouchableOpacity, Image, Dimensions } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
-import { respondToMatch } from '../config/api';
+import { respondToMatch, acceptRequest } from '../config/api';
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 200;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
-const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby }) => {
-  console.log("I WANT", pendingsNearby)
-  console.log(userData)
-  // latitude: 37.412800584173404,
-  // longitude: 126.97131380962955,
-
+const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby, respond }) => {
   if (!myLocation.lat) return <Text> 현재 위치를 가져오는 중..</Text>
 
   const _map = useRef(null);
@@ -51,7 +46,7 @@ const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby }) =>
         }
       }, 10);
     });
-  });
+  }, []);
 
   const interpolations = pendingsNearby.map((pending, index) => {
     const inputRange = [
@@ -93,7 +88,7 @@ const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby }) =>
         }}
       >
         <Marker
-          title="My Location"
+          title="내 위치"
           coordinate={{
             latitude: myLocation.lat,
             longitude: myLocation.lng
@@ -125,7 +120,7 @@ const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby }) =>
               <Animated.Image
                 source={require('../assets/map-marker.png')}
                 style={styles.marker, scaleStyle}
-                resizeMethod='cover'>
+                resizeMode='cover'>
               </Animated.Image>
             </Animated.View>
           </Marker>
@@ -176,16 +171,9 @@ const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby }) =>
               <View style={styles.button}>
                 <TouchableOpacity
                   onPress={() => {
-                    console.log("응답하기 -> fetch To server")
-                    //mockData라 없지만 match의 아이디... 도 보내야함!!!!
-                    // const matchId = pending._id
-
-                    //const { _id, pet } = pending.customer;
-                    //console.log(_id, pet);
-
-                    respondToMatch(userData._id, 12345); // mock Match Id..
-                    //redux에서 isMatched true로 바꾸기
-                  }}
+                    respond(userData._id, pending._id);
+                  }
+                }
                   style={[styles.signIn, {
                     borderColor: '#FF6347',
                     borderWidth: 1
@@ -201,7 +189,7 @@ const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby }) =>
         ))}
       </Animated.ScrollView>
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({

@@ -12,7 +12,8 @@ import { Ionicons } from '@expo/vector-icons';
 const DrawerContent = props => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.userData);
-  const temp = user.nickname ? user.nickname : '한우리'
+
+  const temp = user ? '한우리' : user.username;
 
   const LogOut = async () => {
     try {
@@ -21,7 +22,8 @@ const DrawerContent = props => {
       console.log(err);
     }
     dispatch(userLogout());
-  }
+    props.navigation.navigate('Login');
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -75,7 +77,9 @@ const DrawerContent = props => {
         <DrawerItem
           // icon={({ color, size }) => <Ionicons name="exit-to-app" color={'green'} size={28}/>}
           label="Sign Out"
-          onPress={LogOut}
+          onPress={() => {
+            LogOut();
+          }}
         />
       </View>
     </View>

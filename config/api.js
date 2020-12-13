@@ -23,17 +23,83 @@ export const fetchToLogin = async (email, photoUrl) => {
   }
 };
 
-export const requestMatch = async (userId, reservation) => {
+export const fetchToRegisterPet = async (userId, form) => {
+  try {
+    const response = await axiosInstance.post(`user/${userId}/pet`, {
+      petData: form
+    });
+
+    const status = response.status;
+    const { registeredPet } = response.data;
+
+    if (status === 201) {
+      return registeredPet;
+      //dispatch(addUserPet(registeredPet));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const fetchTosavePhoto = async (userId, imageInfo) => {
+  try {
+    if (!imageInfo) return null;
+
+    const { uri, filename, type } = imageInfo;
+
+    const formdata = new FormData();
+    formdata.append('image', { uri, name: filename, type });
+
+    try {
+      const response = await axiosInstance.post(`/user/${userId}/photo`,
+        formdata,
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+
+      const { photoURL } = response.data;
+      const status = response.status;
+
+      if (status === 201) {
+        return photoURL;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getAllUsersPendingMatches = async () => {
+  try {
+    const response = await axiosInstance.get(`/match`);
+
+    const status = response.status;
+    const { allPendingMatches } = response.data;
+
+    if (status === 200) {
+      return allPendingMatches;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const requestMatch = async (userId, reservation, pet) => {
   try {
     const response = await axiosInstance.post(`user/${userId}/match`, {
-      reservation
+      reservation,
+      pet
     });
 
     const status = response.status;
     const { newMatchRequest } = response.data;
-
-    console.log(status)
-    console.log(newMatchRequest)
 
     if (status === 201) {
       return newMatchRequest;
@@ -43,19 +109,12 @@ export const requestMatch = async (userId, reservation) => {
   }
 };
 
-export const respondToMatch = async (userId, matchId) => {
+export const acceptRequest = async (userId, matchId) => {
   try {
-    const response = await axiosInstance.put(`user/${userId}/match/${matchId}`);
+    const response = await axiosInstance.patch(`user/${userId}/match/${matchId}`);
 
-    const status = response.status;
-    // const { newMatchRequest } = response.data;
-
-    // console.log(status)
-    // console.log(newMatchRequest)
-
-    // if (status === 201) {
-    //   return newMatchRequest;
-    // }
+    const { status, data } = response;
+    if (status === 200) return data.updatedMatch;
   } catch (err) {
     console.log(err);
   }
@@ -63,11 +122,11 @@ export const respondToMatch = async (userId, matchId) => {
 
 export const getLatAndLng = async (address) => {
   try {
-    const { data } = await axios.get('https://dapi.kakao.com/v2/local/search/address.json?query=' + encodeURIComponent(address),//string address
-      { headers: { 'Authorization': `KakaoAK ${KAKAO_API_KEY}` } });
-    // const a = JSON.stringify(data);
-    // console.log(a)
-
+    const { data } = await axios.get('https://dapi.kakao.com/v2/local/search/address.json?query=' + encodeURIComponent(address),
+      {
+        headers: { 'Authorization': `KakaoAK ${KAKAO_API_KEY}` }
+      }
+    );
     return data;
   } catch (err) {
     console.log(err);

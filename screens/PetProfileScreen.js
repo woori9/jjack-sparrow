@@ -4,26 +4,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Picker } from '@react-native-picker/picker';
 import DateAndTimePicker from '../components/DateAndTimePicker';
 import InputPicker from '../components/InputPicker';
-import axiosInstance from '../config/axiosInstance';
 import { addUserPet } from '../actions';
 import CustomButton from '../components/CustomButton';
 import { Ionicons } from '@expo/vector-icons';
 import BottomSheetScreen from '../components/BottomSheet';
 import { pickImage, takePicture } from '../utils/camera';
-//ADD_USER_PET
+import { fetchToRegisterPet, fetchTosavePhoto } from '../config/api';
 
 const PetProfileScreen = () => {
-  const user = useSelector(state => state.user.userData);
+  const { userData } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const bottomSheetRef = useRef();
 
-  const [image, setImage] = useState(null);
+  const [imageInfo, setImageInfo] = useState(null);
   const initialForm = {
     name: '',
     sex: 'Female',
     species: '',
     birthday: '',
-    weight: '',//textInput: String
+    weight: '',
     description: ''
   };
 
@@ -51,7 +50,6 @@ const PetProfileScreen = () => {
   };
 
   const submitHandler = async () => {
-
     if (!isNameValid || !isSpeciesValid || !isBirthdayValid || !isWeightValid) {
       Alert.alert('잘못된 입력', '빈칸을 확인해주세요', [{ text: '확인' }]);
       return;
@@ -61,26 +59,14 @@ const PetProfileScreen = () => {
       setForm({ ...form, description: '없음' });
     }
 
-    if (image) {
-      form.picture = image;
-      console.log("Image added fomm", form);
+    const storedURL = await fetchTosavePhoto(userData._id, imageInfo);
+
+    if (storedURL) {
+      form.picture = storedURL;
     }
 
-    try {
-      const response = await axiosInstance.post(`user/${user._id}/pet`, {
-        petData: form
-      });
-
-      const status = response.status;
-      const { registeredPet } = response.data;
-
-      if (status === 201) {
-        dispatch(addUserPet(registeredPet));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-
+    const registeredPet = await fetchToRegisterPet(userData._id, form);
+    dispatch(addUserPet(registeredPet));
     setForm(initialForm);
   };
 
@@ -94,8 +80,8 @@ const PetProfileScreen = () => {
         color='beige'
         title='Take Photo'
         submitHandler={async () => {
-          const targetURL = await takePicture();
-          setImage(targetURL);
+          const result = await takePicture();
+          setImageInfo(result);
           bottomSheetRef.current.snapTo(1);
         }}
       />
@@ -103,9 +89,8 @@ const PetProfileScreen = () => {
         color="beige"
         title='Choose From Library'
         submitHandler={async () => {
-          const targetURL = await pickImage();
-          console.log(targetURL)
-          setImage(targetURL);
+          const result = await pickImage();
+          setImageInfo(result);
           bottomSheetRef.current.snapTo(1);
         }} />
       <CustomButton color="#FF6347" title="Cancel" submitHandler={() => bottomSheetRef.current.snapTo(1)} />
@@ -121,9 +106,9 @@ const PetProfileScreen = () => {
         <View style={styles.imageUploading}>
           <View style={styles.imagePickerContainer}>
             <View style={styles.imagePreview}>
-              {image ?
+              {imageInfo ?
                 <View>
-                  <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />
+                  <Image source={{ uri: imageInfo.uri }} style={{ width: 150, height: 150 }} />
                   <Button title='사진 변경하기' onPress={() => bottomSheetRef.current.snapTo(0)}></Button>
                 </View>
                 :

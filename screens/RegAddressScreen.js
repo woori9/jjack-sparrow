@@ -7,7 +7,7 @@ import { updateAddress } from '../actions';
 import axiosInstance from '../config/axiosInstance';
 import { getLatAndLng } from '../config/api';
 
-const RegAddressScreen = () => {
+const RegAddressScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const [address, setAddress] = useState('');
@@ -15,13 +15,13 @@ const RegAddressScreen = () => {
   const deviceWidth = Dimensions.get('window').width;
 
   const registerAddress = async (address, detail) => {
-    if (!address || !detail) return alert('주소를 올바르게 입력해주세요');
+    if (!address) return alert('주소를 올바르게 입력해주세요');
 
     const fullAddress = `${address} ${detail}`;
     const location = await getLatAndLng(fullAddress);
     const { documents } = location;
-    const lng = documents[0].x;
-    const lat = documents[0].y;
+    const lng = Number(documents[0].x);
+    const lat = Number(documents[0].y);
 
     try {
       const response = await axiosInstance.post(`user/${user.userData._id}/address`, {
