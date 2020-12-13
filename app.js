@@ -8,6 +8,7 @@ const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const userRouter = require('./routes/user');
+const matchRouter = require('./routes/match');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(function(req, res, next) {
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
+app.use('/match', matchRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });

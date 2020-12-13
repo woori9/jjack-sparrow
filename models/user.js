@@ -9,15 +9,20 @@ const userSchema = new Schema({
     required: true,
     trim: true
   },
-  nickname: {
+  username: {
     type: String,
     default: null,
-    unique: true,
     trim: true
   },
   address: {
-    type: String,
-    default: null
+    description: {
+      type: String,
+      default: null
+    },
+    location: {
+      type: Object,
+      default: null
+    }
   },
   pet: [{
     type: Schema.Types.ObjectId,

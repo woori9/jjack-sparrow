@@ -1,11 +1,13 @@
 const app = require('../app');
 const debug = require('debug')('jjack-backend:server');
 const http = require('http');
+const startSocket = require('../socket');
 
 const port = normalizePort(process.env.PORT || 5000);
 app.set('port', port);
 
 const server = http.createServer(app);
+startSocket(server);
 
 server.listen(port);
 server.on('error', onError);

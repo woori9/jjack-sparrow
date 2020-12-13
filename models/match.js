@@ -19,16 +19,17 @@ const matchSchema = new Schema({
   },
   customer: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'User'
   },
   status: {
     type: Number,
     required: true
   },
-  dateAndTime: [{
-    type: Date,
+  dateAndTime: {
+    type: String,
     required: true
-  }],
+  },
   pet: [{
     type: Schema.Types.ObjectId,
     ref: 'Pet'

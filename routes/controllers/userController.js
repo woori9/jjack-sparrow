@@ -3,6 +3,8 @@ const { JWT_SECRET_KEY } = require('../../config');
 const UserService = require('../../services/UserService');
 const PetService = require('../../services/PetService');
 const MatchService = require('../../services/MatchService');
+const { getPhotoUrl } = require('../middleware/uploadPhoto');
+const match = require('../../models/match');
 
 exports.login = async (req, res, next) => {
   try {
@@ -37,13 +39,11 @@ exports.login = async (req, res, next) => {
 exports.registerAddress = async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const { address, detail } = req.body;
-    const fullAddress = `${address} ${detail}`
-
-    await UserService.updateUserAddress(userId, fullAddress);
+    const { fullAddress, location } = req.body;
+    await UserService.updateUserAddress(userId, fullAddress, location);
 
     return res.status(201).json({
-      addressData: fullAddress
+      message: 'Success'
     });
   } catch (err) {
     err.status = 401;
@@ -57,12 +57,11 @@ exports.registerPet = async (req, res, next) => {
     const userId = req.params.userId;
     const { petData } = req.body;
 
-    const pet = await PetService.createPet(petData);
-    await UserService.updateUserPet(userId, pet._id);
-    await UserService.findUserAndUpdatePet(userId, petData);
+    const registeredPet = await PetService.createPet(petData);
+    await UserService.updateUserPet(userId, registeredPet._id);
 
     return res.status(201).json({
-      addressData: fullAddress
+      registeredPet
     });
   } catch (err) {
     err.status = 401;
@@ -71,18 +70,66 @@ exports.registerPet = async (req, res, next) => {
   }
 };
 
-exports.registerMatch = async (req, res, next) => {
+exports.savePhoto = async (req, res, next) => {
+  try {
+    const awsPhotoURL = getPhotoUrl(req.files);
+
+    if (!awsPhotoURL.length) {
+      throw new Error(err);
+    }
+
+    const { userId } = req.params;
+    const photoURL = awsPhotoURL[0];
+
+    return res.status(201).json({
+      photoURL
+    });
+  } catch (err) {
+    console.log(err);
+
+    next(err);
+  }
+};
+
+exports.createMatch = async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const { matchData } = req.body;
+    const { reservation, pet } = req.body;
 
-    const match = await MatchService.createPet(matchData);
-    await UserService.findUserAndUpdateMatch(userId, match._id);
-    // await UserService.findUserAndUpdatePet(userId, petData);
+    const requestMatchData = {
+      customer: userId,
+      status: 1,
+      dateAndTime: reservation,
+      chat: [],
+      pet: pet
+    };
 
-    // return res.status(201).json({
-    //   addressData: fullAddress
-    // });
+    const newMatchRequest = await MatchService.createMatch(requestMatchData);
+
+    await UserService.updateUserMatch(userId, newMatchRequest._id);
+
+    return res.status(201).json({
+      newMatchRequest
+    });
+  } catch (err) {
+    err.status = 401;
+
+    next(err);
+  }
+};
+
+exports.updateBothUserAndMatch = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const matchId = req.params.matchId;
+
+    await MatchService.updateMatchStatus(matchId, userId); //match 상태 업데이트 (Status + petSitter id)
+    await UserService.updateUserMatch(userId, matchId);//push match to pet sitter's match
+    const updatedMatch = await MatchService.getTargetMatch(matchId);
+
+    return res.status(200).json({
+      updatedMatch
+    });
   } catch (err) {
     err.status = 401;
 

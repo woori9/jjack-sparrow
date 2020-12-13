@@ -26,7 +26,7 @@ const petSchema = new Schema({
   description: {
     type: String
   },
-  picture: {
+  picture: {//profile pic
     type: String,
     default: null
   }
