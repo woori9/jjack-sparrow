@@ -25,6 +25,9 @@ exports.login = async (req, res, next) => {
       targetUser = await UserService.createNewUser(newUserData);
     }
 
+    const userMatch = await MatchService.getUserMatch(targetUser.match);
+    targetUser.match = userMatch;
+
     return res.status(201).json({
       token: jwt.sign(payload, JWT_SECRET_KEY),
       userData: targetUser
@@ -94,12 +97,13 @@ exports.savePhoto = async (req, res, next) => {
 exports.createMatch = async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const { reservation, pet } = req.body;
+    const { startAt, expireAt, pet } = req.body;
 
     const requestMatchData = {
       customer: userId,
       status: 1,
-      dateAndTime: reservation,
+      startAt: startAt,
+      expireAt: expireAt,
       chat: [],
       pet: pet
     };
@@ -130,6 +134,39 @@ exports.updateBothUserAndMatch = async (req, res, next) => {
     return res.status(200).json({
       updatedMatch
     });
+  } catch (err) {
+    err.status = 401;
+
+    next(err);
+  }
+};
+
+exports.deleteMatches = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const matchId = req.params.matchId;//복수 일 경우 '&'
+    const matches = matchId.split('&');
+
+    await MatchService.deleteMatches(matches);
+    await UserService.deleteExpiredPendingMatches(userId, matches);//push match to pet sitter's match
+
+    return res.status(204);
+  } catch (err) {
+    err.status = 401;
+
+    next(err);
+  }
+};
+
+exports.deleteMatch = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const matchId = req.params.matchId;
+
+    await MatchService.deleteMatch(matchId);
+    await UserService.deleteExpiredPendingMatch(userId, matchId);
+
+    return res.status(204);
   } catch (err) {
     err.status = 401;
 

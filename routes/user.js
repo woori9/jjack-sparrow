@@ -20,4 +20,8 @@ router.post('/:userId/match', verifyToken, userController.createMatch);
 
 router.patch('/:userId/match/:matchId', verifyToken, userController.updateBothUserAndMatch);//매치 상태 업데이트 + petSitter의 match에 해당 매치 push
 
+router.delete('/:userId/matches/:matchId', verifyToken, userController.deleteMatches);
+
+router.delete('/:userId/match/:matchId', verifyToken, userController.deleteMatch);
+
 module.exports = router;

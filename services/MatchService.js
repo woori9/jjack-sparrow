@@ -1,4 +1,3 @@
-const match = require('../models/match');
 const Match = require('../models/match');
 
 const MatchService = {
@@ -7,9 +6,27 @@ const MatchService = {
     return newMatch;
   },
 
+  getUserMatch: async matchIdArray => {
+    const userMatch = await Match.find({ '_id': { $in: matchIdArray } })
+      .populate('customer')
+      .populate('pet')
+      .populate('petsitter')
+      .exec();
+    return userMatch;
+  },
+
   getTargetMatch: async matchId => {
-    const populatedMatch = await Match.findById(matchId).populate('customer').populate('pet').exec();
+    const populatedMatch = await Match.findById(matchId)
+      .populate('customer')
+      .populate('pet')
+      .populate('petsitter')
+      .exec();
     return populatedMatch;
+  },
+
+  getTargetChat: async matchId => {
+    const populatedChat = await Match.findById(matchId).exec();
+    return populatedChat;
   },
 
   getAllPendings: async () => {
@@ -19,7 +36,26 @@ const MatchService = {
 
   updateMatchStatus: async (matchId, petsitterId) => {
     await Match.findOneAndUpdate({ _id: matchId }, { $set: { status: 2, petsitter: petsitterId } }).exec();
-  }
+  },
+
+  deleteMatches: async arrayOfMatchIds => {
+    arrayOfMatchIds.forEach(async id => {
+      await Match.findByIdAndDelete(id);
+    });
+  },
+
+  deleteMatch: async id => {
+    console.log(id)
+    await Match.findByIdAndDelete(id);
+  },
+
+  updateSuccessToPast: async matchId => {
+    await Match.findOneAndUpdate({ _id: matchId }, { $set: { status: 3 } }).exec();
+  },
+
+  updateChat: async (matchId, newChat) => {
+    await Match.findOneAndUpdate({ _id: matchId }, { $push: { chat: newChat } }).exec();
+  },
 };
 
 module.exports = MatchService;

@@ -4,7 +4,8 @@ const UserService = {
   getExistingUser: async (email) => {
     const user = await User.findOne({ email: email }, (err, data) => { console.log(err) })
       .populate('pet')
-      .populate('match');
+      .populate('match')
+      
     // .populate('review')
     // .populate('calendar');
 
@@ -26,6 +27,14 @@ const UserService = {
 
   updateUserMatch: async (userId, matchId) => {
     await User.updateOne({ _id: userId }, { $push: { match: matchId } });
+  },
+
+  deleteExpiredPendingMatches: async (userId, matches) => {
+    await User.updateOne( { _id: userId }, { $pullAll: { match : matches } } );
+  },
+
+  deleteExpiredPendingMatch: async (userId, matchId) => {
+    await User.updateOne( { _id: userId }, { $pull: { match: matchId } } );
   }
 };
 

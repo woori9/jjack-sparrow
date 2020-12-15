@@ -1,21 +1,23 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const chatSchema = new Schema({
-  sendBy: {
-    type: Schema.Types.ObjectId,
-    required: true
-  },
-  message: {
-    type: String,
-    required: true
-  }
-});
+
+// const chatSchema = new Schema({
+//   sendBy: {
+//     type: Schema.Types.ObjectId,
+//     required: true
+//   },
+//   message: {
+//     type: String,
+//     required: true
+//   }
+// }, { timestamps: true });
 
 const matchSchema = new Schema({
   petsitter: {
     type: Schema.Types.ObjectId,
-    default: null
+    default: null,
+    ref: 'User'
   },
   customer: {
     type: Schema.Types.ObjectId,
@@ -26,15 +28,21 @@ const matchSchema = new Schema({
     type: Number,
     required: true
   },
-  dateAndTime: {
-    type: String,
+  startAt: {
+    type: Date,
+    required: true
+  },
+  expireAt: {
+    type: Date,
     required: true
   },
   pet: [{
     type: Schema.Types.ObjectId,
     ref: 'Pet'
   }],
-  chat: [chatSchema],
+  chat: [{
+    type: Object
+  }],
 }, { timestamps: true });
 
 module.exports = mongoose.model('Match', matchSchema);
