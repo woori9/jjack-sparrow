@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
-import ChatScreen from '../screens/ChatScreen';
 import CalenderScreen from '../screens/CalendarScreen';
 import DrawerContent from '../screens/DrawerContent';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +13,7 @@ import MatchStackScreen from './stacks/MatchStack';
 import { PetProfileStackScreen, UserProfileStackScreen } from './stacks/ProfileStack';
 import AuthStackScreen from './stacks/AuthStack';
 import AddressStackScreen from './stacks/AddressStack';
+import ChatStackScreen from './stacks/ChatStack';
 
 const Navigation = () => {
   const Drawer = createDrawerNavigator();
@@ -78,7 +78,7 @@ const Navigation = () => {
         />
         <Tabs.Screen
           name="Chat"
-          component={ChatScreen}
+          component={ChatStackScreen}
           options={{
             tabBarLabel: 'Chat',
             tabBarIcon: ({ color }) => <Ionicons name='ios-chatboxes' size={28} color="green" />
@@ -110,7 +110,7 @@ const Navigation = () => {
   };
 
   const getHeaderTitle = route => {
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+    const routeName = getFocusedRouteNameFromRoute(route)
 
     switch (routeName) {
       case 'Home':

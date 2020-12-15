@@ -20,23 +20,15 @@ export const matchSocket = {
     socket.emit('accepted', matchId);
   },
 
-  // socket.emit('message-public', data, () => {
-  //   setMessage('');
-  //   addMessage(data);
-  // });
+  joinPendingRoom: (matchId) => {
+    socket.emit('join pending room', matchId);
+  },
 
-  joinMeeting: (meetingId, userId) => {
-    socket.emit('join meeting', { meetingId, userId });
+  notifyPendingMatchExpire: matchId => {
+    socket.emit('pending match expired', matchId);
   },
-  sendLocation: location => {
-    socket.emit('send location', { location });
-  },
-  sendMessage: (userId, nickname, message, callback) => {
-    socket.emit('send message', { userId, nickname, message }, callback);
-  },
-  sendNotification: (nickname, message) => {
-    socket.emit('send notification', { nickname, message });
-  },
+  ///
+
   arriveMeeting: () => {
     socket.emit('arrive meeting');
   },
@@ -51,5 +43,22 @@ export const matchSocket = {
   },
 };
 
-export const chatSocket = {};
+export const chatSocket = {
+  joinChatRoom: matchId => {
+    socket.emit('join chat room', matchId);
+  },
+
+  sendMessage: (matchId, userId, message, callback) => {
+    socket.emit('send message', { matchId, userId, message })//, callback);
+  },
+
+  // socket.emit('message-public', data, () => {
+  //   setMessage('');
+  //   addMessage(data);
+  // });
+
+  sendNotification: (nickname, message) => {
+    socket.emit('send notification', { nickname, message });
+  },
+};
 

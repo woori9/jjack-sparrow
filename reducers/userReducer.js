@@ -7,6 +7,8 @@ import {
   CHECK_USER_MATCH_STATUS,
   ADD_SUCCESFUL_MATCH,
   DELETE_MY_PENDING_MATCH,
+  DELETE_MY_EXPIRED_PENDING_MATCHES,
+  MOVE_EXPIRED_SUCCESS_MATCH_TO_PAST
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -25,8 +27,10 @@ const user = (state = initialState, action) => {
         isLoggedIn: true,
         userData: action.payload
       };
+
     case USER_LOGOUT:
       return initialState;
+
     case UPDATE_ADDRESS:
       const { address, location } = action.payload;
       return {
@@ -39,6 +43,7 @@ const user = (state = initialState, action) => {
           }
         }
       };
+
     case ADD_USER_PET:
       const { pet } = state.userData;
 
@@ -49,7 +54,8 @@ const user = (state = initialState, action) => {
           pet: [...pet, action.payload]
         }
       };
-    case CHECK_USER_MATCH_STATUS: //userData의 match는 처음 가져온 이후 업데이트 하지 않고 리덕스를 통해서 관리한다.
+
+    case CHECK_USER_MATCH_STATUS:
       const match = action.payload;
       const pendingMatch = match.filter(item => item.status === 1);
       const successMatch = match.filter(item => item.status === 2);
@@ -61,21 +67,47 @@ const user = (state = initialState, action) => {
         successMatch: successMatch,
         pastMatch: pastMatch
       };
+
     case ADD_USER_PENDING_MATCH:
       return {
         ...state,
         waitingMatch: [...state.waitingMatch, action.payload]
       };
+
     case ADD_SUCCESFUL_MATCH:
       return {
         ...state,
         successMatch: [...state.successMatch, action.payload]
       };
+
     case DELETE_MY_PENDING_MATCH:
       return {
         ...state,
         waitingMatch: state.waitingMatch.filter(pending => pending._id !== action.payload)
       };
+
+    case DELETE_MY_EXPIRED_PENDING_MATCHES:
+      const notExpired = state.waitingMatch.reduce((filtered, pending) => {
+        if (action.payload.indexOf(pending._id) === -1) {
+          filtered.push(pending);
+        }
+        return filtered;
+      }, []);
+
+      return {
+        ...state,
+        waitingMatch: [...notExpired]
+      };
+
+    case MOVE_EXPIRED_SUCCESS_MATCH_TO_PAST:
+      const updatedMatch = action.payload;
+
+      return {
+        ...state,
+        successMatch: state.successMatch.filter(success => success._id !== updatedMatch._id),
+        pastMatch: [...state.pastMatch, action.payload],
+      };
+
     default:
       return state;
   }

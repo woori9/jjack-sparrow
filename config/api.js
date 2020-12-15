@@ -2,6 +2,7 @@ import asyncStorage from '@react-native-async-storage/async-storage';
 import axiosInstance from '../config/axiosInstance';
 import getEnvVars from '../environment';
 import axios from 'axios';
+
 const { KAKAO_API_KEY } = getEnvVars();
 
 export const fetchToLogin = async (email, photoUrl) => {
@@ -91,10 +92,11 @@ export const getAllUsersPendingMatches = async () => {
   }
 };
 
-export const requestMatch = async (userId, reservation, pet) => {
+export const requestMatch = async (userId, startAt, expireAt, pet) => {
   try {
     const response = await axiosInstance.post(`user/${userId}/match`, {
-      reservation,
+      startAt,
+      expireAt,
       pet
     });
 
@@ -120,6 +122,49 @@ export const acceptRequest = async (userId, matchId) => {
   }
 };
 
+export const deleteExpiredPendings = async (userId, pendings) => {
+  try {
+    const pendingsToDelete = pendings.join('&');
+    await axiosInstance.delete(`user/${userId}/matches/${pendingsToDelete}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deletePending = async (userId, pendingId) => {
+  try {
+    await axiosInstance.delete(`user/${userId}/match/${pendingId}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateExpiredSuccess = async successId => {
+  try {
+    const response = await axiosInstance.patch(`match/${successId}`);
+
+    const { status, data } = response;
+    if (status === 200) return data.updatedMatch;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getChatting = async matchId => {
+  try {
+    const response = await axiosInstance.get(`match/${matchId}/chat`);
+
+    const status = response.status;
+    const { chat } = response.data;
+
+    if (status === 200) {
+      return chat;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const getLatAndLng = async (address) => {
   try {
     const { data } = await axios.get('https://dapi.kakao.com/v2/local/search/address.json?query=' + encodeURIComponent(address),
@@ -132,4 +177,3 @@ export const getLatAndLng = async (address) => {
     console.log(err);
   }
 };
-

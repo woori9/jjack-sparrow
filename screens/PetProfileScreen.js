@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import BottomSheetScreen from '../components/BottomSheet';
 import { pickImage, takePicture } from '../utils/camera';
 import { fetchToRegisterPet, fetchTosavePhoto } from '../config/api';
+import moment from 'moment-timezone';
 
 const PetProfileScreen = () => {
   const { userData } = useSelector(state => state.user);
@@ -167,7 +168,7 @@ const PetProfileScreen = () => {
             <Text style={styles.label}>생일</Text>
             <TextInput
               style={styles.input}
-              value={birthday}
+              value={moment(birthday).tz("Asia/Seoul").format('YYYY-MM-DD')}
             />
           </View>
           <DateAndTimePicker form={form} setForm={setForm} />

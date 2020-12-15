@@ -5,14 +5,16 @@ import Map from '../components/Map';
 import arePointsNear from '../utils/checkIsNear';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateAllPendingMatch } from '../actions';
-import mockPending from '../data/mock_pendingMatch.json';
 import { socket, matchSocket } from '../socket';
 import { getAllUsersPendingMatches, acceptRequest } from '../config/api';
 import { deleteThePendingMatch, addSuccessfulMatch} from '../actions'
+import { filterExpiredMatch } from '../utils/moment';
+import mockPending from '../data/mock_pendingMatch.json';
 
 const MapScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
+
   const allPendingMatches = useSelector(state => state.allPendingMatch);
   const { waitingMatch, successMatch } = useSelector(state => state.user);
   const { userData } = useSelector(state => state.user);
@@ -21,9 +23,10 @@ const MapScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      const allPendings = await getAllUsersPendingMatches();
+      const allPendings = await getAllUsersPendingMatches();//아예 서버에서 내려줄 때 유효하지 않은 것은 거르도록 리펙토링하기
       const excluded = allPendings.filter(pending => pending.customer._id !== userData._id);
-      dispatch(updateAllPendingMatch(excluded));
+      const filtered = filterExpiredMatch(excluded);
+      dispatch(updateAllPendingMatch(filtered));
       //dispatch(updateAllPendingMatch(mockPending));////mock data inclue to redux pendingMatches
     })();
 
@@ -34,6 +37,10 @@ const MapScreen = ({ navigation }) => {
     socket.on('one pending matched so delete from list of pending', matchId => {
       dispatch(deleteThePendingMatch(matchId));
     });
+
+    socket.on('delete expired pending match', matchId => {
+      dispatch(deleteThePendingMatch(matchId));
+    })
 
     return () => socket.off();
   }, []);

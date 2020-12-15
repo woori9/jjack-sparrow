@@ -16,7 +16,8 @@ const MatchStackScreen = ({ navigation, route }) => {
 
   const getHeaderTitle = route => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if(routeName) return false;
+    if(routeName === '매칭 내역' || !routeName) return true;
+    return false;
   };
 
   return (

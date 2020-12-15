@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Button, Platform, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment-timezone';
 
 const DateAndTimePicker = ({ form, setForm }) => {
   const [date, setDate] = useState(new Date());//Zulu time
@@ -25,11 +24,7 @@ const DateAndTimePicker = ({ form, setForm }) => {
   };
 
   const confirmDateTime = () => {
-    const SeoulStandardDate = moment(date).tz("Asia/Seoul");
-    const newDate = SeoulStandardDate.format('YYYY-MM-DD');
-    //const newDate = SeoulStandardDate.format('MMMM Do YYYY, h:mm a');
-
-    setForm({...form, birthday: newDate});
+    setForm({...form, birthday: date});
     setShow(false);
   }
 

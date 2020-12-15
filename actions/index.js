@@ -9,7 +9,10 @@ import {
   UPDATE_ALL_PENDING_MATCH,
   DELETE_ONE_PENDING_MATCH,
   ADD_SUCCESFUL_MATCH,
-  DELETE_MY_PENDING_MATCH
+  DELETE_MY_PENDING_MATCH,
+  DELETE_MY_EXPIRED_PENDING_MATCHES,
+  MOVE_EXPIRED_SUCCESS_MATCH_TO_PAST,
+  CHANGE_LAST_MESSAGE
 } from '../constants/actionTypes';
 
 export const userLogin = userData => {
@@ -84,9 +87,40 @@ export const addSuccessfulMatch = match => {
   };
 };
 
-export const deleteMyPendingMatch = id => {
+export const deleteMyPending = id => {
   return {
     type: DELETE_MY_PENDING_MATCH,
     payload: id
+  };
+};
+
+export const deleteMyExpiredPendingMatches = expiredIds => {
+  return {
+    type: DELETE_MY_EXPIRED_PENDING_MATCHES,
+    payload: expiredIds
+  };
+};
+
+export const deleteExpiredPendingMatches = expiredIds => {
+  return {
+    type: DELETE_EXPIRED_PENDING_MATCHES,
+    payload: expiredIds
+  };
+};
+
+export const moveFromSuccessToPast = updatedMatch => {
+  return {
+    type: MOVE_EXPIRED_SUCCESS_MATCH_TO_PAST,
+    payload: updatedMatch
+  };
+};
+
+export const updateLastMessage = (matchId, chatInfo) => {
+  return {
+    type: CHANGE_LAST_MESSAGE,
+    payload: {
+      matchId,
+      chatInfo
+    }
   };
 };

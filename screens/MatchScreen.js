@@ -1,41 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Button, FlatList, Alert } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import BottomSheetScreen from '../components/BottomSheet';
-import CustomButton from '../components/CustomButton';
+import { addUserPendingMatch, addSuccessfulMatch, deleteMyPending } from '../actions';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import BottomSheetScreen from '../components/BottomSheet';
+import { useSelector, useDispatch } from 'react-redux';
+import CustomButton from '../components/CustomButton';
+import MatchItem from '../components/MatchItem';
+import { socket, matchSocket } from '../socket';
 import moment from 'moment-timezone';
 import { requestMatch } from '../config/api';
-import { addUserPendingMatch } from '../actions';
-import { socket, matchSocket } from '../socket';
-import { addSuccessfulMatch, deleteMyPendingMatch } from '../actions';
 
 const MatchScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [showCurrentMatch, setshowCurrentMatch] = useState(true);
-  const { userData } = useSelector(state => state.user);
-  const { waitingMatch } = useSelector(state => state.user);
-  const { successMatch } = useSelector(state => state.user);
-  const haveNoCurrentMatchAtAll = !waitingMatch.length && !successMatch.length;
-
   const bottomSheetRef = useRef();
-
-  const [date, setDate] = useState(new Date());//Zulu time
+  const [showCurrentMatch, setshowCurrentMatch] = useState(true);
+  const { userData, waitingMatch, successMatch } = useSelector(state => state.user);
+  const [startAt, setStartAt] = useState(new Date());//Zulu time
+  const [expireAt, setExpireAt] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [reservation, setReservation] = useState('');
-
-  useEffect(() => {
-    const SeoulStandardDate = moment(date).tz("Asia/Seoul");
-    const newDate = SeoulStandardDate.format('MMMM Do YYYY, h:mm a');
-
-    setReservation(newDate);
-  }, [date]);
+  const [startOrExpire, setStartOrExpire] = useState('START');
+  const haveNoCurrentMatchAtAll = !waitingMatch.length && !successMatch.length;
 
   useEffect(() => {
     socket.on('matching succeed', match => {//pet sitter가 응답해서 매칭에 성공했을 때. 그 상대방에게 옴
 
-      dispatch(deleteMyPendingMatch(match._id));
+      dispatch(deleteMyPending(match._id));
       dispatch(addSuccessfulMatch(match));
 
       Alert.alert(
@@ -69,20 +59,21 @@ const MatchScreen = ({ navigation }) => {
         ) : (
             <View>
               <Text>매칭 된 것(파트너)과 대기중인 리스트 </Text>
+
               <FlatList
                 keyExtractor={match => match._id}
                 data={[...successMatch, ...waitingMatch]}
-                renderItem={({ item }) => {
-                  //element === {item: 배열 안의 요소, index: #}
-                  if (item.petsitter) return <Text>매치가 이루짐.. 나중에 PEtsetter 넣기 </Text>;
+                renderItem={({ item }) => {//element === {item: 배열 안의 요소, index: #}
                   return (
-                    <View style={styles.waitingList}>
-                      <Text>{item.dateAndTime}</Text>
-                      <Text>대기중</Text>
-                    </View>
-                  )
+                    <MatchItem
+                      userId={userData._id}
+                      match={item}
+                      dispatch={dispatch}
+                    />
+                  );
                 }}
               />
+
             </View>
           )}
       </View>
@@ -115,11 +106,11 @@ const MatchScreen = ({ navigation }) => {
         <View>
           <DateTimePicker
             testID="dateTimePicker"
-            value={date}
+            value={startOrExpire === 'START' ? startAt : expireAt}
             mode={mode}
             is24Hour={true}
             display="default"
-            onChange={onChange}
+            onChange={(e, selectedDate) => onChange(e, selectedDate, startOrExpire)}
             minuteInterval={5}
           />
           <Button
@@ -131,43 +122,65 @@ const MatchScreen = ({ navigation }) => {
           <View style={{ alignItems: 'center' }}>
             <Text style={styles.panelTitle}>예약 날짜를 선택해주세요</Text>
             <Text style={styles.panelSubtitle}>반려동물을 맡기고 싶은 날과 시간을 선택해 주세요</Text>
-            <Text style={styles.dateAndTime}>{reservation}</Text>
           </View>
         )
       }
 
-      <Button onPress={showDatepicker} title='날짜 선택' />
-      <Button onPress={showTimepicker} title='시작 시간' />
-      <Button onPress={() => console.log('몇 시간??')} title='얼마나?' />
-      <CustomButton
-        color="#FF6347"
-        title="확인"
-        submitHandler={async () => {
-          const newMatchRequest = await requestMatch(userData._id, reservation, userData.pet);
-          dispatch(addUserPendingMatch(newMatchRequest));//요청한 유저의 리덕스.. user redux pending match 업데이트
-          matchSocket.informNewPendingMatch(newMatchRequest);
-          bottomSheetRef.current.snapTo(1);
+      <View>
+        <View style={styles.dateAndTimeChunk}>
+          <Text style={styles.dateAndTime}>{moment(startAt).tz("Asia/Seoul").format('MMMM Do YYYY, h:mm a')}</Text>
+          <View style={styles.dateAndTimebuttons}>
+            <Button onPress={() => showDatepicker('START')} title='시작 날짜' />
+            <Button onPress={() => showTimepicker('START')} title='시작 시간' />
+          </View>
+        </View>
+        <View style={styles.dateAndTimeChunk}>
+          <Text style={styles.dateAndTime}>{moment(expireAt).tz("Asia/Seoul").format('MMMM Do YYYY, h:mm a')}</Text>
+          <View style={styles.dateAndTimebuttons}>
+            <Button onPress={() => showDatepicker('EXPIRE')} title='종료 날짜' />
+            <Button onPress={() => showTimepicker('EXPIRE')} title='종료 시간' />
+          </View>
+        </View>
+        <CustomButton
+          color="#FF6347"
+          title="확인"
+          submitHandler={async () => {
+            const newMatchRequest = await requestMatch(userData._id, startAt, expireAt, userData.pet);
+            dispatch(addUserPendingMatch(newMatchRequest));
+            matchSocket.informNewPendingMatch(newMatchRequest);
+            bottomSheetRef.current.snapTo(1);
 
-          navigation.navigate('대기');
-        }}
-        navigation={navigation}
-      />
+            navigation.navigate('대기');
+          }}
+          navigation={navigation}
+        />
+      </View>
 
-    </View>
+    </View >
   };
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+  const onChange = (event, selectedDate, value) => {
+    const currentDate = selectedDate || startAt;
     setShow(Platform.OS === 'ios');
-    setDate(currentDate);
+
+    if (value === 'START') {
+      setStartAt(currentDate);
+      return;
+    }
+    if (value === 'EXPIRE') {
+      setExpireAt(currentDate);
+      return;
+    }
   };
 
-  const showDatepicker = () => {
+  const showDatepicker = (value) => {
+    setStartOrExpire(value);
     setShow(true);
     setMode('date');
   };
 
-  const showTimepicker = () => {
+  const showTimepicker = (value) => {
+    setStartOrExpire(value);
     setShow(true);
     setMode('time');
   };
@@ -336,7 +349,16 @@ const styles = StyleSheet.create({
   waitingList: {
     flex: 1,
     flexDirection: 'row',
-  }
+  },
+  dateAndTimeChunk: {
+    alignItems: 'center',
+    margin: 5,
+  },
+  dateAndTimebuttons: {
+    top: -5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
 });
 
 export default MatchScreen;

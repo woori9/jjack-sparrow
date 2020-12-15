@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { socket } from '../socket';
 import { useSelector, useDispatch } from 'react-redux';
-import { addSuccessfulMatch, deleteMyPendingMatch } from '../actions';
 
 const WaitingScreen = ({ navigation: { goBack } }) => {
   const dispatch = useDispatch();
