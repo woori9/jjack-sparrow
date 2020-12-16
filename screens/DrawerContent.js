@@ -38,35 +38,35 @@ const DrawerContent = props => {
           </View>
           <View style={styles.drawerSection}>
             <DrawerItem
-              // icon={({ color, size }) => (
-              //   <Icon
-              //     name="home-outline"
-              //     color={color}
-              //     size={size}
-              //   />
-              // )}
+              icon={({ color, size }) => (
+                <Ionicons
+                  name="md-home"
+                  color={color}
+                  size={size}
+                />
+              )}
               label="Home"
               onPress={() => { props.navigation.navigate('Home') }}
             />
             <DrawerItem
-              // icon={({ color, size }) => (
-              //   <Icon
-              //     name="account-outline"
-              //     color={color}
-              //     size={size}
-              //   />
-              // )}
+              icon={({ color, size }) => (
+                <Ionicons
+                  name="md-person"
+                  color={color}
+                  size={size}
+                />
+              )}
               label="UserProfile"
               onPress={() => { props.navigation.navigate('UserProfile') }}
             />
             <DrawerItem
-              // icon={({ color, size }) => (
-              //   <Icon
-              //     name="account-outline"
-              //     color={color}
-              //     size={size}
-              //   />
-              // )}
+              icon={({ color, size }) => (
+                <Ionicons
+                  name="ios-paw"
+                  color={color}
+                  size={size}
+                />
+              )}
               label="PetProfile"
               onPress={() => { props.navigation.navigate('PetProfile') }}
             />
@@ -75,7 +75,7 @@ const DrawerContent = props => {
       </DrawerContentScrollView>
       <View style={styles.bottomDrawerSection}>
         <DrawerItem
-          // icon={({ color, size }) => <Ionicons name="exit-to-app" color={'green'} size={28}/>}
+          icon={({ color, size }) => <Ionicons name="ios-exit" color={'green'} size={28}/>}
           label="Sign Out"
           onPress={() => {
             LogOut();

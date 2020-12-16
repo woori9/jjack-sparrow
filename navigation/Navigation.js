@@ -14,6 +14,7 @@ import { PetProfileStackScreen, UserProfileStackScreen } from './stacks/ProfileS
 import AuthStackScreen from './stacks/AuthStack';
 import AddressStackScreen from './stacks/AddressStack';
 import ChatStackScreen from './stacks/ChatStack';
+import { Image } from 'react-native';
 
 const Navigation = () => {
   const Drawer = createDrawerNavigator();
@@ -31,14 +32,20 @@ const Navigation = () => {
             headerTitle: getHeaderTitle(route),
             headerLeft: () => (
               <Ionicons
+                style={{ marginLeft: 10 }}
                 name='ios-menu'
-                size={25}
+                size={27}
                 onPress={() => navigation.openDrawer()}>
-              </Ionicons>)
+              </Ionicons>),
+            headerRight: () => (
+              <Image source={require('../assets/lovebird.png')}
+                style={{ flex: 1, alignSelf:'flex-end', height: 40, width: 40, marginRight: 10 }}
+              />
+            )
           })}
         />
         <HomeStack.Screen
-          name='후기'
+          name='전체 후기'
           component={ReviewScreen}
         />
       </HomeStack.Navigator>
@@ -70,11 +77,6 @@ const Navigation = () => {
             tabBarLabel: 'Match',
             tabBarIcon: ({ color }) => <Ionicons name='md-people' size={28} color="green" />
           }}
-          // options={({ route }) => ({
-          //   tabBarLabel: 'Match',
-          //   tabBarIcon: ({ color }) => <Ionicons name='md-people' size={28} color="green" />,
-          //   headerTitle: getHeaderTitle(route)
-          // })}
         />
         <Tabs.Screen
           name="Chat"

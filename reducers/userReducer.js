@@ -8,7 +8,8 @@ import {
   ADD_SUCCESFUL_MATCH,
   DELETE_MY_PENDING_MATCH,
   DELETE_MY_EXPIRED_PENDING_MATCHES,
-  MOVE_EXPIRED_SUCCESS_MATCH_TO_PAST
+  MOVE_EXPIRED_SUCCESS_MATCH_TO_PAST,
+  UPDATE_REVIEW
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -106,6 +107,14 @@ const user = (state = initialState, action) => {
         ...state,
         successMatch: state.successMatch.filter(success => success._id !== updatedMatch._id),
         pastMatch: [...state.pastMatch, action.payload],
+      };
+
+    case UPDATE_REVIEW:
+      const targetIndex = state.pastMatch.findIndex(past => past._id === action.payload.matchId);
+      state.pastMatch[targetIndex].review = action.payload.review;
+
+      return {
+        ...state
       };
 
     default:

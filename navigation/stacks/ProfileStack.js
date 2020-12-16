@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Image } from 'react';
 import PetProfileScreen from '../../screens/PetProfileScreen';
 import UserProfileScreen from '../../screens/UserProfileScreen';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,6 +15,7 @@ export const PetProfileStackScreen = ({ navigator, navigation }) => {
         options={{
           headerLeft: () => (
             <Ionicons
+              style={{ marginLeft: 10 }}
               name='ios-menu'
               size={25}
               onPress={() => navigation.openDrawer()}>
@@ -34,6 +35,7 @@ export const UserProfileStackScreen = ({ navigator, navigation }) => {
         options={{
           headerLeft: () => (
             <Ionicons
+              style={{ marginLeft: 10 }}
               name='ios-menu'
               size={25}
               onPress={() => navigation.openDrawer()}>

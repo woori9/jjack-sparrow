@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button, FlatList, Alert, Modal } from 'react-native';
 import { addUserPendingMatch, addSuccessfulMatch, deleteMyPending } from '../actions';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import BottomSheetScreen from '../components/BottomSheet';
@@ -9,12 +9,13 @@ import MatchItem from '../components/MatchItem';
 import { socket, matchSocket } from '../socket';
 import moment from 'moment-timezone';
 import { requestMatch } from '../config/api';
+import PastContent from './PastContent';
 
 const MatchScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const bottomSheetRef = useRef();
   const [showCurrentMatch, setshowCurrentMatch] = useState(true);
-  const { userData, waitingMatch, successMatch } = useSelector(state => state.user);
+  const { userData, waitingMatch, successMatch, pastMatch } = useSelector(state => state.user);
   const [startAt, setStartAt] = useState(new Date());//Zulu time
   const [expireAt, setExpireAt] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -93,11 +94,7 @@ const MatchScreen = ({ navigation }) => {
     </View>
   );
 
-  const pastMatch = (
-    <Text>과거 매칭</Text>
-  );
-
-  const matchContent = showCurrentMatch ? readyToMatch : pastMatch;
+  const matchContent = showCurrentMatch ? readyToMatch : <PastContent pastMatch={pastMatch} userId={userData._id} />;
 
   const renderInner = () => {
     return <View style={styles.panel}>
@@ -190,6 +187,53 @@ const MatchScreen = ({ navigation }) => {
 
       <BottomSheetScreen bottomSheetRef={bottomSheetRef} renderInner={renderInner} />
 
+      {/* <View style={styles.statsContainer}>
+        <View style={styles.statsBox}>
+          <Text style={[styles.text, { fontSize: 24 }]}>483</Text>
+          <Text style={[styles.text, styles.subText]}>Posts</Text>
+        </View>
+        <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
+          <Text style={[styles.text, { fontSize: 24 }]}>45,844</Text>
+          <Text style={[styles.text, styles.subText]}>Followers</Text>
+        </View>
+        <View style={styles.statsBox}>
+          <Text style={[styles.text, { fontSize: 24 }]}>302</Text>
+          <Text style={[styles.text, styles.subText]}>Following</Text>
+        </View>
+      </View> */}
+
+{/* statsContainer: {
+        flexDirection: "row",
+        alignSelf: "center",
+        marginTop: 32
+    },
+    statsBox: {
+        alignItems: "center",
+        flex: 1
+    },
+
+text: {
+        fontFamily: "HelveticaNeue",
+        color: "#52575D"
+    },
+    image: {
+        flex: 1,
+        height: undefined,
+        width: undefined
+    },
+    titleBar: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 24,
+        marginHorizontal: 16
+    },
+    subText: {
+        fontSize: 12,
+        color: "#AEB5BC",
+        textTransform: "uppercase",
+        fontWeight: "500"
+    }, */}
+
       <View style={styles.match}>
         <View style={styles.matchToggle}>
           <TouchableOpacity
@@ -266,7 +310,7 @@ const styles = StyleSheet.create({
   },
   matchContent: {
     flex: 6,
-    backgroundColor: 'skyblue'
+    backgroundColor: 'gray'
   },
   matchDescription: {
     flex: 3,

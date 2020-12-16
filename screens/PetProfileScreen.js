@@ -121,7 +121,7 @@ const PetProfileScreen = () => {
         </View>
 
         <View style={styles.wrapper}>
-          <View style={styles.inputForm}>
+
             <Text style={styles.label}>이름</Text>
             <TextInput
               style={styles.input}
@@ -131,22 +131,23 @@ const PetProfileScreen = () => {
               returnKeyType='next'
               placeholder='이름을 입력해주세요'
             />
-          </View>
+
           <View style={styles.validationText}>
             {!isNameValid && <Text>빈칸을 채워주세요.</Text>}
           </View>
         </View>
         <View style={styles.wrapper}>
-          <View style={styles.PickerWrapper}>
+
             <Text style={styles.label}>성별</Text>
-            <Picker itemStyle={{ height: 60 }}
+            <Picker
+              itemStyle={{ backgroundColor: "white", color: "blue", fontFamily:"Ebrima", fontSize:17, height: 50 }}
               selectedValue={sex}
               style={styles.Picker}
               onValueChange={itemValue => onChangeHandler(itemValue, 'Sex')}>
               <Picker.Item label='Female' value='Female' />
               <Picker.Item label='Male' value='Male' />
             </Picker>
-          </View>
+
         </View>
         <View style={styles.wrapper}>
           <View style={styles.inputForm}>
@@ -219,7 +220,6 @@ const styles = StyleSheet.create({
   imageUploading: {
     flex: 1,
     padding: 10,
-    backgroundColor: 'blue',
   },
   wrapper: {
     flex: 1,
@@ -228,22 +228,24 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingTop: 10,
     paddingBottom: 10,
+    marginLeft: 10
   },
   inputForm: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'gray',
     justifyContent: 'space-around',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   label: {
-    fontSize: 15
+    fontSize: 18
   },
   input: {
     width: '50%',
-    borderWidth: 1,
     height: 40,
-    alignItems: 'center'
+    alignItems: 'center',
+    borderBottomColor: 'gray',
+    borderBottomWidth: 1,
   },
   validationText: {
     flex: 1,
@@ -254,13 +256,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     marginBottom: 5,
-    backgroundColor: 'red',
+    borderRadius: 100
   },
   imageUpload: {
     width: 150,
     height: 150,
-    borderRadius: 15,
-    backgroundColor: 'blue',
+    borderRadius: 100,
+    backgroundColor: '#a4b0be',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -274,6 +276,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'pink',
     paddingTop: 20,
+    paddingBottom: 45
   },
   header: {
     backgroundColor: 'red',
@@ -337,9 +340,13 @@ const styles = StyleSheet.create({
     marginLeft: 35
   },
   Picker: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
+    height: 80,
+    width: 200,
     backgroundColor: 'white',
+    marginLeft: 10
+
   }
 });
 

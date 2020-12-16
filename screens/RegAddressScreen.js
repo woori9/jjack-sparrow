@@ -42,52 +42,82 @@ const RegAddressScreen = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.box1}>
-          <Text style={styles.label}>Title: Register Address Screen</Text>
+        <Text style={styles.title}>주소를 등록해주세요</Text>
+        <View style={styles.registerBox}>
           <Postcode
             style={styles.postcode}
             jsOptions={{ animated: true }}
             onSelected={data => setAddress(data.address)}
           />
         </View>
-        <View style={styles.box2}>
-          <Text style={styles.addressDetail}>상세주소</Text>
-          <TextInput
-            style={styles.input}
-            value={detail}
-            onChangeText={text => setDetail(text)}
-          />
+        <View style={styles.addressInput}>
+          <Text style={styles.title}>입력된 주소</Text>
+          <Text style={[styles.text, { marginTop: 20, marginBottom: 5 }]}>{address}</Text>
+        </View>
+        <View style={styles.addressInput}>
+          <Text style={styles.title}>상세 주소</Text>
+          <View style={styles.text}>
+            <TextInput
+              style={styles.input}
+              value={detail}
+              onChangeText={text => setDetail(text)}
+            />
+          </View>
         </View>
         <TouchableOpacity
-          style={styles.RegisterButton}
+          style={styles.registerButton}
           onPress={() => registerAddress(address, detail)}>
-          <Text>Register</Text>
+          <Text style={{ fontSize: 17, color: '#43582f' }}>Register</Text>
         </TouchableOpacity>
       </View>
+      <View style={{ padding: 10, backgroundColor: '#fff' }}></View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#fff'
   },
-  box1: {
-    flex: 1
+  title: {
+    marginTop: 10,
+    marginLeft: 10,
+    fontSize: 17
   },
-  box2: {
-    flex: 1
+  text: {
+    marginTop: 10,
+    marginLeft: 10,
+    fontSize: 14
+  },
+  registerBox: {
+    alignItems: 'center',
+    marginTop: 10,
   },
   postcode: {
     flex: 1,
     width: 360,
     height: 300
   },
+  addressInput: {
+    marginTop: 20,
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1
+  },
   input: {
     paddingHorizontal: 2,
     paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
+  },
+  registerButton: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: 18,
+    padding: 13,
+    width: '70%',
+    borderRadius: 15,
+    borderColor: '#BDC581',
+    borderWidth: 1,
+    backgroundColor: '#F8EFBA',
   }
 });
 

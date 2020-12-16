@@ -2,6 +2,7 @@ import asyncStorage from '@react-native-async-storage/async-storage';
 import axiosInstance from '../config/axiosInstance';
 import getEnvVars from '../environment';
 import axios from 'axios';
+import { add } from 'react-native-reanimated';
 
 const { KAKAO_API_KEY } = getEnvVars();
 
@@ -159,6 +160,38 @@ export const getChatting = async matchId => {
 
     if (status === 200) {
       return chat;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+export const registerReview = async (userId, pastId, form) => {
+  try {
+    const response = await axiosInstance.patch(`user/${userId}/match/${pastId}/review`, {
+      reviewData: form
+    });
+
+    const { status, data } = response;
+
+    if (status === 200) return data.newReview;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getReviews = async (address) => {
+  try {
+    const response = await axiosInstance.get(`/reviews`);
+
+    const status = response.status;
+    const { reviews } = response.data;
+
+    console.log(reviews)
+
+    if (status === 200) {
+      return reviews;
     }
   } catch (err) {
     console.log(err);

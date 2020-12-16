@@ -15,8 +15,6 @@ import moment from 'moment-timezone';
 const ChatChannel = ({ navigation, item, userId }) => {
   const otherUsername = userId === item.customer._id ? item.petsitter.username : item.customer.username;
   const { chat, _id } = item;
-  console.log('chat', chat.length)
-  //useDispatch(updateLastMessage(_id, chat[chat.length - 1].message));
 
   return (
     <TouchableWithoutFeedback

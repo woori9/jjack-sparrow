@@ -12,7 +12,8 @@ import {
   DELETE_MY_PENDING_MATCH,
   DELETE_MY_EXPIRED_PENDING_MATCHES,
   MOVE_EXPIRED_SUCCESS_MATCH_TO_PAST,
-  CHANGE_LAST_MESSAGE
+  CHANGE_LAST_MESSAGE,
+  UPDATE_REVIEW
 } from '../constants/actionTypes';
 
 export const userLogin = userData => {
@@ -121,6 +122,16 @@ export const updateLastMessage = (matchId, chatInfo) => {
     payload: {
       matchId,
       chatInfo
+    }
+  };
+};
+
+export const updateReview = (matchId, review) => {//object form
+  return {
+    type: UPDATE_REVIEW,
+    payload: {
+      matchId,
+      review
     }
   };
 };

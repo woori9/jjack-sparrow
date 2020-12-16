@@ -18,7 +18,7 @@ const MatchItem = ({ userId, match, dispatch }) => {
     const ticking = setTimeout(async () => {
 
       if (isPending) {
-        matchSocket.joinPendingRoom(match._id);//pending room join
+        matchSocket.joinPendingRoom(match._id);
         matchSocket.notifyPendingMatchExpire(match._id);
 
         Alert.alert(

@@ -18,7 +18,7 @@ const ChatStackScreen = () => {
   return (
     <ChatStack.Navigator>
       <ChatStack.Screen
-        name='Channel'
+        name='채팅'
         component={ChannelListScreen}
       />
       <ChatStack.Screen
