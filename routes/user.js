@@ -24,4 +24,6 @@ router.delete('/:userId/matches/:matchId', verifyToken, userController.deleteMat
 
 router.delete('/:userId/match/:matchId', verifyToken, userController.deleteMatch);
 
+router.patch('/:userId/match/:matchId/review', verifyToken, userController.registerReview);
+
 module.exports = router;

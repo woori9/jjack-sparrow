@@ -4,7 +4,7 @@ const UserService = require('../../services/UserService');
 const PetService = require('../../services/PetService');
 const MatchService = require('../../services/MatchService');
 const { getPhotoUrl } = require('../middleware/uploadPhoto');
-const match = require('../../models/match');
+const ReviewService = require('../../services/ReviewService');
 
 exports.login = async (req, res, next) => {
   try {
@@ -43,7 +43,9 @@ exports.registerAddress = async (req, res, next) => {
   try {
     const userId = req.params.userId;
     const { fullAddress, location } = req.body;
+    console.log(fullAddress, location)
     await UserService.updateUserAddress(userId, fullAddress, location);
+    console.log(2)
 
     return res.status(201).json({
       message: 'Success'
@@ -171,5 +173,37 @@ exports.deleteMatch = async (req, res, next) => {
     err.status = 401;
 
     next(err);
+  }
+};
+
+exports.registerReview = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const matchId = req.params.matchId;
+    const { reviewData } = req.body;
+    const { rating, description } = reviewData;
+
+    console.log(userId, matchId)
+    console.log('##', reviewData);
+
+    const review = {
+      author: userId,
+      rating,
+      description
+    };
+
+    console.log('review', review);
+
+    const newReview = await ReviewService.createReview(review);
+    console.log(newReview)
+    await UserService.updateUserReview(userId, newReview._id);
+    await MatchService.updateReview(matchId, newReview);
+
+    return res.status(200).json({
+      newReview
+    });
+
+  } catch (err) {
+    console.log(err);
   }
 };

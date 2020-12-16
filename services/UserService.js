@@ -5,7 +5,6 @@ const UserService = {
     const user = await User.findOne({ email: email }, (err, data) => { console.log(err) })
       .populate('pet')
       .populate('match')
-      
     // .populate('review')
     // .populate('calendar');
 
@@ -18,7 +17,9 @@ const UserService = {
   },
 
   updateUserAddress: async (userId, fullAddress, location) => {
-    await User.findByIdAndUpdate(userId, { $set: { 'address.description': fullAddress, 'address.location': location } });
+    await User.findByIdAndUpdate(userId, { $set: { 'address.description': fullAddress, 'address.location': location } }, function (err) {
+      console.log(err);
+    });
   },
 
   updateUserPet: async (userId, petId) => {
@@ -30,11 +31,16 @@ const UserService = {
   },
 
   deleteExpiredPendingMatches: async (userId, matches) => {
-    await User.updateOne( { _id: userId }, { $pullAll: { match : matches } } );
+    await User.updateOne({ _id: userId }, { $pullAll: { match: matches } });
   },
 
   deleteExpiredPendingMatch: async (userId, matchId) => {
-    await User.updateOne( { _id: userId }, { $pull: { match: matchId } } );
+    await User.updateOne({ _id: userId }, { $pull: { match: matchId } });
+  },
+
+  updateUserReview: async (userId, reviewId) => {
+    console.log('review id', reviewId)
+    await User.findByIdAndUpdate(userId, { $push: { review: reviewId } });
   }
 };
 

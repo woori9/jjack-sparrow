@@ -56,6 +56,11 @@ const MatchService = {
   updateChat: async (matchId, newChat) => {
     await Match.findOneAndUpdate({ _id: matchId }, { $push: { chat: newChat } }).exec();
   },
+
+  updateReview: async (matchId, newReview) => {
+    const result = await Match.findOneAndUpdate({ _id: matchId }, { $set: { review: newReview } }).exec();
+    console.log(result);
+  }
 };
 
 module.exports = MatchService;
