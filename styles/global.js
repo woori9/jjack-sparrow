@@ -26,6 +26,17 @@ const globalStyles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 5,
     marginLeft: 5
+  },
+  registerButton: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: 18,
+    padding: 13,
+    width: '70%',
+    borderRadius: 15,
+    borderColor: '#BDC581',
+    borderWidth: 1,
+    backgroundColor: '#F8EFBA',
   }
 });
 

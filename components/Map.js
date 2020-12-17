@@ -9,7 +9,11 @@ const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby, respond }) => {
-  if (!myLocation.lat) return <Text> 현재 위치를 가져오는 중..</Text>
+  if (!myLocation.lat) return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text> 현재 위치를 가져오는 중..</Text>
+    </View>
+  )
 
   const _map = useRef(null);
   const _scrollView = useRef(null);
@@ -160,30 +164,36 @@ const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby, resp
       >
         {pendingsNearby.map((pending, index) => (
           <View style={styles.card} key={index}>
-            <Image
-              source={require('../assets/favicon.png')}
-              style={styles.cardImage}
-              resizeMode="cover"
-            />
-            <View style={styles.textContent}>
-              <Text numberOfLines={1} style={styles.cardtitle}>pending에 따라서 나중에 넣어주기</Text>
-              <Text numberOfLines={1} style={styles.cardDescription}>pending에 따라서 나중에 넣어주기</Text>
-              <View style={styles.button}>
-                <TouchableOpacity
-                  onPress={() => {
-                    respond(userData._id, pending._id);
-                  }
-                }
-                  style={[styles.signIn, {
-                    borderColor: '#FF6347',
-                    borderWidth: 1
-                  }]}
-                >
-                  <Text style={[styles.textSign, {
-                    color: '#FF6347'
-                  }]}>응답하기</Text>
-                </TouchableOpacity>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ height: 150 }}>
+                <Image
+                  source={{ uri: pending.pet[0].picture }}
+                  style={styles.cardImage}
+                  resizeMode="cover"
+                />
               </View>
+              <View style={styles.textContent}>
+                <Text numberOfLines={1} style={styles.cardtitle}>{pending.customer.username} 님의 {pending.pet[0].name}</Text>
+                <Text numberOfLines={1} style={styles.cardDescription}>종류: {pending.pet[0].species}</Text>
+                <Text numberOfLines={1} style={styles.cardDescription}>성별: {pending.pet[0].sex}</Text>
+                <Text numberOfLines={1} style={[styles.cardDescription, { marginTop: 20 }]}>{pending.pet[0].description} 동물 정보</Text>
+              </View>
+            </View>
+            <View style={styles.button}>
+              <TouchableOpacity
+                onPress={() => {
+                  respond(userData._id, pending._id);
+                }
+                }
+                style={[styles.signIn, {
+                  borderColor: '#FF6347',
+                  borderWidth: 1
+                }]}
+              >
+                <Text style={[styles.textSign, {
+                  color: '#FF6347'
+                }]}>응답하기</Text>
+              </TouchableOpacity>
             </View>
           </View>
         ))}
@@ -209,7 +219,7 @@ const styles = StyleSheet.create({
   },
   textContent: {
     flex: 2,
-    padding: 10,
+    padding: 5,
   },
   scrollView: {
     position: "absolute",
@@ -220,7 +230,6 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    // padding: 10,
     elevation: 2,
     backgroundColor: "#FFF",
     borderTopLeftRadius: 5,
@@ -232,18 +241,19 @@ const styles = StyleSheet.create({
     shadowOffset: { x: 2, y: -2 },
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
-    overflow: "hidden",
+    overflow: "hidden"
   },
   cardImage: {
     flex: 3,
-    width: "100%",
+    width: 100,
     height: "100%",
-    alignSelf: "center",
+    marginTop: 5,
   },
   cardtitle: {
     fontSize: 12,
     marginTop: 5,
     fontWeight: "bold",
+    marginBottom: 20
   },
   cardDescription: {
     fontSize: 12,
@@ -258,7 +268,8 @@ const styles = StyleSheet.create({
     padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 3
+    borderRadius: 3,
+    marginTop: 10
   },
   textSign: {
     fontSize: 14,

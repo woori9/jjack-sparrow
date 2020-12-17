@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Button, Platform, TouchableOpacity, Text } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const DateAndTimePicker = ({ form, setForm }) => {
@@ -24,20 +24,21 @@ const DateAndTimePicker = ({ form, setForm }) => {
   };
 
   const confirmDateTime = () => {
-    setForm({...form, birthday: date});
+    setForm({ ...form, birthday: date });
     setShow(false);
   }
 
   return (
     <View>
-      <View>
-        <Button style={{top: 20}} onPress={showDatepicker} title='날짜를 선택해주세요' />
+      <View style={{ backgroundColor: 'white', marginTop: 10, alignItems: 'flex-start' }}>
+        <Button onPress={showDatepicker} title='날짜 선택하기' />
       </View>
-      <View style={{display: 'none'}}>
+      <View style={{ display: 'none' }}>
         <Button onPress={showTimepicker} title='시간' />
       </View>
       {show && (
-        <>
+        <TouchableOpacity style={styles.container}>
+
           <DateTimePicker
             testID="dateTimePicker"
             value={date}
@@ -46,12 +47,31 @@ const DateAndTimePicker = ({ form, setForm }) => {
             display="default"
             onChange={onChange}
             minuteInterval={5}
+            style={{ backgroundColor: 'white' }}
           />
-          <Button onPress={confirmDateTime} title='확인'></Button>
-        </>
-      )}
-    </View>
+
+          <View
+            style={{ padding: 15, alignItems: 'flex-start', backgroundColor: 'white' }}>
+            <TouchableOpacity onPress={confirmDateTime}>
+              <Text style={{fontSize: 15}}>확인</Text>
+            </TouchableOpacity>
+          </View>
+          {/* <Button onPress={confirmDateTime} title='확인'></Button> */}
+        </TouchableOpacity>
+      )
+      }
+    </View >
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Platform.OS === 'ios' ? '#00000066' : 'transparent',
+    position: 'absolute',
+    justifyContent: 'flex-end',
+    width: '100%',
+    height: '100%'
+  },
+})
 
 export default DateAndTimePicker;

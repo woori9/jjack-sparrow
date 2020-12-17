@@ -67,12 +67,12 @@ const HomeScreen = ({ navigation }) => {
               <View style={{ width: width - 40, height: 200, marginTop: 20, marginBottom: 20 }}>
                 <Image
                   style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderRadius: 5, borderWidth: 1, borderColor: '#dddddd' }}
-                  source={require('../assets/icon.png')}
+                  source={{ uri: 'https://jjack.s3.ap-northeast-2.amazonaws.com/F5C4EBB8-FA13-4F76-845E-FBDD11AAE75D.jpg'}}
                 />
               </View>
             </View>
 
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'pink' }}>
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={{ fontSize: 20, fontWeight: '600', paddingHorizontal: 20 }}>
                 후기
             </Text>
@@ -87,7 +87,7 @@ const HomeScreen = ({ navigation }) => {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
               >
-                {reviews.map(review => <Card review={review}/>)}
+                {reviews.map((review, index) => <Card review={review} key={index}/>)}
 
               </ScrollView>
             </View>
@@ -103,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'pink'
+    backgroundColor: 'white'
   }
 });
 

@@ -1,23 +1,66 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Image, ScrollView } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from 'react-redux';
 import CustomButton from '../components/CustomButton';
+import BottomSheetScreen from '../components/BottomSheet';
+import { pickImage, takePicture } from '../utils/camera';
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { fetchToAddUserProfile, fetchTosavePhoto } from '../config/api';
 
 const UserProfileScreen = () => {
   const { userData } = useSelector(state => state.user);
   const { username, address, email } = userData;
+  const [imageInfo, setImageInfo] = useState(null);
+  const bottomSheetRef = useRef();
+
+  const renderInner = () => {
+    return <View style={styles.panel}>
+      <View style={{ alignItems: 'center' }}>
+        <Text style={styles.panelTitle}>Upload Photo</Text>
+        <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
+      </View>
+      <CustomButton
+        color='#f4cbc5'
+        title='Take Photo'
+        style={{ borderWidth: 1, borderColor: '#efb4b0' }}
+        submitHandler={async () => {
+          const result = await takePicture();
+          setImageInfo(result);
+          bottomSheetRef.current.snapTo(1);
+        }}
+      />
+      <CustomButton
+        color="#f4cbc5"
+        title='Choose From Library'
+        style={{ borderWidth: 1, borderColor: '#efb4b0' }}
+        submitHandler={async () => {
+          const result = await pickImage();
+          setImageInfo(result);
+          const storedURL = await fetchTosavePhoto(userData._id, result);// 향후 user profile 이미지 저장 기능 추가하기
+          //await fetchToAddUserProfile(userData._id, storedURL);
+          bottomSheetRef.current.snapTo(1);
+        }} />
+      <CustomButton color="#fad3a8" style={{ borderWidth: 1, borderColor: '#ffb284' }} title="Cancel" submitHandler={() => bottomSheetRef.current.snapTo(1)} />
+    </View>
+  };
 
   return (
     <SafeAreaView style={styles.container}>
+      <BottomSheetScreen bottomSheetRef={bottomSheetRef} renderInner={renderInner} />
       <ScrollView showsVerticalScrollIndicator={false}>
 
         <View style={{ alignSelf: "center" }}>
           <View style={styles.profileImage}>
-            <Image source={{ uri: 'https://jjack.s3.ap-northeast-2.amazonaws.com/31D0C66A-2E75-447C-8FDF-91256726CA7C.jpg' }} style={styles.image} resizeMode="center"></Image>
+            {imageInfo ?
+              <Image source={{ uri: imageInfo.uri }} style={styles.image} ></Image> :
+              <View style={styles.profileImage}>
+                <Image source={require('../assets/lovebird.png')} style={styles.image} resizeMode="center"></Image>
+              </View>
+            }
           </View>
           <View style={styles.add}>
-            <Ionicons name="ios-add" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
+            <Ionicons name="ios-add" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }} onPress={() => bottomSheetRef.current.snapTo(0)}></Ionicons>
           </View>
         </View>
 
@@ -66,6 +109,7 @@ const UserProfileScreen = () => {
                 borderWidth: 1
               }} />
           </View>
+
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -104,7 +148,9 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     borderRadius: 100,
-    overflow: "hidden"
+    overflow: "hidden",
+    // borderWidth: 1,
+    // borderColor: "#52575D"
   },
   add: {
     backgroundColor: "#41444B",
@@ -145,5 +191,21 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: "#52575D",
     fontSize: 15
-  }
+  },
+  panel: {
+    padding: 20,
+    backgroundColor: '#fae5e2',
+    paddingTop: 20,
+    paddingBottom: 45
+  },
+  panelTitle: {
+    fontSize: 27,
+    height: 35,
+  },
+  panelSubtitle: {
+    fontSize: 14,
+    color: 'gray',
+    height: 30,
+    marginBottom: 10,
+  },
 });

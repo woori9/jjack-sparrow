@@ -44,7 +44,7 @@ const PastContent = ({ pastMatch, userId }) => {
           }}
         >
           {formikProps => (
-            <View style={{ width: '90%', backgroundColor: "beige" }}>
+            <View style={{ width: '90%' }}>
 
               <TextInput
                 style={{ backgroundColor: 'pink', borderWidth: 1, borderColor: '#ddd', padding: 10, fontSize: 18, borderRadius: 6, marginTop: 20 }}
@@ -77,7 +77,7 @@ const PastContent = ({ pastMatch, userId }) => {
   };
   //#ffcccc
   return (
-    <View style={{ flex: 1, backgroundColor: 'beige' }}>
+    <View style={{ flex: 1 }}>
 
       <Modal
         visible={modalOpen}
@@ -108,18 +108,18 @@ const PastContent = ({ pastMatch, userId }) => {
 
           return (
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 16, backgroundColor: 'white', alignItems: 'center' }}>
-              <Text style={{ fontSize: 17 }}>{otherUser}님 과의 매치</Text>
+              <Text style={{ fontSize: 15, color: "#52575D" }}>{otherUser}님 과의 매치</Text>
               {item.review ? (
-                <TouchableOpacity style={{ backgroundColor: 'pink', width: 100, height: 30, alignItems: 'center', padding: 6, borderRadius: 7 }}>
-                  <Text style={{ fontSize: 15, color: 'blue' }}>완료</Text>
+                <TouchableOpacity style={{ backgroundColor: '#ffcccc', width: 100, height: 30, alignItems: 'center', padding: 6, borderRadius: 7 }}>
+                  <Text style={{ fontSize: 15, color: "#52575D" }}>완료</Text>
                 </TouchableOpacity>) : (
                   <TouchableOpacity
-                    style={{ backgroundColor: 'pink' }}
+                    style={{ backgroundColor: '#efb4b0', width: 100, height: 30, alignItems: 'center', padding: 6, borderRadius: 7  }}
                     onPress={() => {
                       setModalOpen(true);
                       setTargetMatch(item._id);
                     }}>
-                    <Text>후기 남기기</Text>
+                    <Text style={{ fontSize: 15, color: "#52575D" }}>후기 남기기</Text>
                   </TouchableOpacity>
                 )}
             </View>

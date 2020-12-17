@@ -23,7 +23,7 @@ const Card = ({ review }) => {
     <View style={{ height: 170, width: 260, marginLeft: 20, borderWidth: 0.5, borderColor: '#dddddd' }}>
       <View style={{ flex: 1, backgroundColor: 'beige' }}>
         <View style={{ flexDirection: 'row' }}>
-          <Image source={require('../assets/icon.png')}
+          <Image source={{ uri: author.picture }}
             style={{ width: 50, height: 50, marginLeft: 5, marginTop: 5, resizeMode: 'cover', borderRadius: 100 }}
           />
           <View style={{ paddingLeft: 8, paddingTop: 22 }}>

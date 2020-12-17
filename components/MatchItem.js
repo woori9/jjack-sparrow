@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Alert, Text } from 'react-native';
+import { StyleSheet, View, Alert, Text, TouchableOpacity } from 'react-native';
 import { calculateRemaingMiliSeconds } from '../utils/moment';
 import { socket, matchSocket } from '../socket';
 import { deletePending, updateExpiredSuccess } from '../config/api';
@@ -15,12 +15,14 @@ const MatchItem = ({ userId, match, dispatch }) => {
   //3600000 startAt 나중에..
   useEffect(() => {
 
+    if (isPending) {
+      matchSocket.joinPendingRoom(match._id);
+      matchSocket.notifyPendingMatchExpire(match._id);
+    }
+
     const ticking = setTimeout(async () => {
 
       if (isPending) {
-        matchSocket.joinPendingRoom(match._id);
-        matchSocket.notifyPendingMatchExpire(match._id);
-
         Alert.alert(
           '만료된 매치',
           `대기 중이던 매치가 만료되어 삭제합니다`,
@@ -47,7 +49,6 @@ const MatchItem = ({ userId, match, dispatch }) => {
       socket.off('join pending room');
       socket.off('pending expired');
       socket.off('success expired');
-      socket.off();
     };
   }, []);
 
@@ -56,20 +57,28 @@ const MatchItem = ({ userId, match, dispatch }) => {
       {isPending ? (
 
         <View style={styles.waitingList}>
-          <Text>{moment(match.startAt).format('YYYY-MM-DD HH:mm')}</Text>
-          <Text>대기중</Text>
+          <Text style={styles.text}>{moment(match.startAt).format('YYYY-MM-DD HH:mm')}</Text>
+          <View style={{ marginLeft: 20 }}>
+            <Text style={styles.text}>대기중</Text>
+          </View>
+          <TouchableOpacity style={{ marginLeft: 35, backgroundColor: 'pink', width: 85, borderRadius: 15 }}>
+            <Text style={styles.text}>취소하기</Text>
+          </TouchableOpacity>
         </View>
 
       ) : (
 
           <View style={styles.waitingList}>
+            <Text style={styles.text}>{moment(match.startAt).format('YYYY-MM-DD HH:mm')}</Text>
             {match.petsitter._id === userId ? (
-              <Text style={styles.waitingList}>{match.customer.email}님과 </Text>
+              <Text style={styles.text}>{match.customer.username}님과 약속</Text>
             ) : (
-                <Text style={styles.waitingList}>{match.petsitter.email}님과 </Text>
+                <Text style={styles.text}>{match.petsitter.username}님과 약속</Text>
               )
             }
-            <Text>매칭 완료</Text>
+            <TouchableOpacity style={{ backgroundColor: 'pink', width: 85, marginLeft: 15, borderRadius: 15 }}>
+              <Text style={styles.text}>취소하기</Text>
+            </TouchableOpacity>
           </View>
 
         )
@@ -80,8 +89,19 @@ const MatchItem = ({ userId, match, dispatch }) => {
 
 const styles = StyleSheet.create({
   waitingList: {
+    flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'beige'
+    width: 340,
+    alignSelf: 'center',
+    marginTop: 10,
+    borderBottomWidth: 1,
+    borderColor: '#AEB5BC'
+  },
+  text: {
+    lineHeight: 30,
+    fontFamily: "HelveticaNeue",
+    color: "#52575D",
+    marginLeft: 20
   }
 });
 

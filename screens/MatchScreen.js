@@ -26,6 +26,8 @@ const MatchScreen = ({ navigation }) => {
   useEffect(() => {
     socket.on('matching succeed', match => {//pet sitter가 응답해서 매칭에 성공했을 때. 그 상대방에게 옴
 
+      console.log(match)
+
       dispatch(deleteMyPending(match._id));
       dispatch(addSuccessfulMatch(match));
 
@@ -54,12 +56,11 @@ const MatchScreen = ({ navigation }) => {
       <View style={styles.matchDescription}>
         {haveNoCurrentMatchAtAll ? (
           <View>
-            <Text>아직 매칭이 이루어지지 않았습니다.</Text>
-            <Text>지금 매칭을 시도해보세요.</Text>
+            <Text style={{ color: "#52575D" }} >아직 매칭이 이루어지지 않았습니다.</Text>
+            <Text style={{ color: "#52575D", alignSelf: 'center' }} >지금 매칭을 시도해보세요.</Text>
           </View>
         ) : (
             <View>
-              <Text>매칭 된 것(파트너)과 대기중인 리스트 </Text>
 
               <FlatList
                 keyExtractor={match => match._id}
@@ -187,59 +188,12 @@ const MatchScreen = ({ navigation }) => {
 
       <BottomSheetScreen bottomSheetRef={bottomSheetRef} renderInner={renderInner} />
 
-      {/* <View style={styles.statsContainer}>
-        <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]}>483</Text>
-          <Text style={[styles.text, styles.subText]}>Posts</Text>
-        </View>
-        <View style={[styles.statsBox, { borderColor: "#DFD8C8", borderLeftWidth: 1, borderRightWidth: 1 }]}>
-          <Text style={[styles.text, { fontSize: 24 }]}>45,844</Text>
-          <Text style={[styles.text, styles.subText]}>Followers</Text>
-        </View>
-        <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]}>302</Text>
-          <Text style={[styles.text, styles.subText]}>Following</Text>
-        </View>
-      </View> */}
-
-{/* statsContainer: {
-        flexDirection: "row",
-        alignSelf: "center",
-        marginTop: 32
-    },
-    statsBox: {
-        alignItems: "center",
-        flex: 1
-    },
-
-text: {
-        fontFamily: "HelveticaNeue",
-        color: "#52575D"
-    },
-    image: {
-        flex: 1,
-        height: undefined,
-        width: undefined
-    },
-    titleBar: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 24,
-        marginHorizontal: 16
-    },
-    subText: {
-        fontSize: 12,
-        color: "#AEB5BC",
-        textTransform: "uppercase",
-        fontWeight: "500"
-    }, */}
-
       <View style={styles.match}>
         <View style={styles.matchToggle}>
           <TouchableOpacity
             style={styles.button1}
             onPress={() => setshowCurrentMatch(true)}>
-            <Text>현재 매칭</Text>
+            <Text style={{ color: showCurrentMatch? "#688777" : "#52575D", fontSize: 16 }}>현재 매칭</Text>
           </TouchableOpacity>
 
           <View style={styles.line}></View>
@@ -247,7 +201,7 @@ text: {
           <TouchableOpacity
             style={styles.button2}
             onPress={() => setshowCurrentMatch(false)}>
-            <Text>지난 매칭</Text>
+            <Text style={{ color: showCurrentMatch? "#52575D" : "#688777", fontSize: 16 }}>지난 매칭</Text>
           </TouchableOpacity>
         </View>
 
@@ -265,11 +219,10 @@ text: {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
   },
   matchHeader: {
     flex: 1,
-    backgroundColor: 'yellow'
   },
   match: {
     flex: 6
@@ -282,35 +235,34 @@ const styles = StyleSheet.create({
   },
   button1: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: 'white',
     height: '100%',
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    borderColor: 'blue'
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#d1ccc0'
   },
   line: {
-    borderRightWidth: 3,
-    borderColor: 'red',
+    borderRightWidth: 1,
+    borderColor: '#d1ccc0',
     marginTop: '2%',
     height: '80%',
   },
   button2: {
     flex: 1,
-    backgroundColor: 'pink',
+    backgroundColor: 'white',
     height: '100%',
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    borderColor: 'blue'
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#d1ccc0'
   },
   matchContent: {
-    flex: 6,
-    backgroundColor: 'gray'
+    flex: 6
   },
   matchDescription: {
     flex: 3,
@@ -319,21 +271,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   matchButtons: {
-    flex: 2,
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
   },
   matchButton: {
-    flex: 1,
+    height: 55,
     borderRadius: 30,
     width: '50%',
     margin: 20,
-    backgroundColor: 'beige',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'gray'
   },
   footer: {
-    backgroundColor: 'yellow',
     padding: 10
   },
   panel: {

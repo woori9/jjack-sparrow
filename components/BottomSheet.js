@@ -29,7 +29,7 @@ const BottomSheetScreen = ({ bottomSheetRef, renderInner }) => {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: 'red',
+    backgroundColor: '#efb4b0',
     shadowColor: '#333333',
     shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,

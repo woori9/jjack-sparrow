@@ -188,8 +188,6 @@ export const getReviews = async (address) => {
     const status = response.status;
     const { reviews } = response.data;
 
-    console.log(reviews)
-
     if (status === 200) {
       return reviews;
     }
@@ -197,6 +195,22 @@ export const getReviews = async (address) => {
     console.log(err);
   }
 };
+
+export const fetchToAddUserProfile = async (userId, pictureURL) => {
+  try {
+    const response = await axiosInstance.post(`user/${userId}/picture`, {
+      pictureURL
+    });
+
+    const status = response.status;
+
+    if (status === 201) {
+      return newMatchRequest;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 export const getLatAndLng = async (address) => {
   try {

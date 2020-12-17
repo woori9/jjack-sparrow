@@ -30,6 +30,8 @@ const styles = StyleSheet.create({
   buttonTitle: {
     fontSize: 14,
     color: 'black',
+    fontFamily: "HelveticaNeue",
+    color: "#52575D",
   },
 });
 
