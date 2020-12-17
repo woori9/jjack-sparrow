@@ -45,7 +45,6 @@ const MatchService = {
   },
 
   deleteMatch: async id => {
-    console.log(id)
     await Match.findByIdAndDelete(id);
   },
 
@@ -59,7 +58,6 @@ const MatchService = {
 
   updateReview: async (matchId, newReview) => {
     const result = await Match.findOneAndUpdate({ _id: matchId }, { $set: { review: newReview } }).exec();
-    console.log(result);
   }
 };
 

@@ -5,8 +5,6 @@ const UserService = {
     const user = await User.findOne({ email: email }, (err, data) => { console.log(err) })
       .populate('pet')
       .populate('match')
-    // .populate('review')
-    // .populate('calendar');
 
     return user;
   },
@@ -23,7 +21,7 @@ const UserService = {
   },
 
   updateUserPet: async (userId, petId) => {
-    await User.updateOne({ _id: userId }, { $push: { pet: petId } });//'pet' ??? 문자열?
+    await User.updateOne({ _id: userId }, { $push: { pet: petId } });
   },
 
   updateUserMatch: async (userId, matchId) => {
@@ -39,7 +37,6 @@ const UserService = {
   },
 
   updateUserReview: async (userId, reviewId) => {
-    console.log('review id', reviewId)
     await User.findByIdAndUpdate(userId, { $push: { review: reviewId } });
   }
 };

@@ -43,9 +43,8 @@ exports.registerAddress = async (req, res, next) => {
   try {
     const userId = req.params.userId;
     const { fullAddress, location } = req.body;
-    console.log(fullAddress, location)
+
     await UserService.updateUserAddress(userId, fullAddress, location);
-    console.log(2)
 
     return res.status(201).json({
       message: 'Success'
@@ -183,19 +182,14 @@ exports.registerReview = async (req, res, next) => {
     const { reviewData } = req.body;
     const { rating, description } = reviewData;
 
-    console.log(userId, matchId)
-    console.log('##', reviewData);
-
     const review = {
       author: userId,
       rating,
       description
     };
 
-    console.log('review', review);
-
     const newReview = await ReviewService.createReview(review);
-    console.log(newReview)
+
     await UserService.updateUserReview(userId, newReview._id);
     await MatchService.updateReview(matchId, newReview);
 

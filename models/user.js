@@ -24,6 +24,10 @@ const userSchema = new Schema({
       default: null
     }
   },
+  picture: {
+    type: String,
+    default: null
+  },
   pet: [{
     type: Schema.Types.ObjectId,
     ref: 'Pet'
