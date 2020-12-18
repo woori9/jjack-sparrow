@@ -4,42 +4,51 @@ import {
   View,
   Text,
   Image,
-  Button,
   TouchableWithoutFeedback
 } from "react-native";
-import { updateLastMessage } from '../actions';
-import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment-timezone';
 //import styles from "./style";
 
 const ChatChannel = ({ navigation, item, userId }) => {
-  const otherUsername = userId === item.customer._id ? item.petsitter.username : item.customer.username;
+  const otherUser = userId === item.customer._id ? item.petsitter : item.customer;
   const { chat, _id } = item;
+  const [currentMessage, setCurrentMessage] = useState(null);
+  const [currentDate, setCurrentDate] = useState(null);
+
+  // console.log('CURREMT!!', currentMessage);
+  // console.log('###', currentDate);
+
+  useEffect(() => {
+    if (chat.length) {
+      setCurrentMessage(chat[chat.length - 1].message);
+      setCurrentDate(chat[chat.length - 1].createdAt);
+    }
+  }, []);
 
   return (
     <TouchableWithoutFeedback
       onPress={() => navigation.navigate('Chat', {
-        id: item._id, name: otherUsername
+        id: item._id, name: otherUser.username,
+        // handleCurrentMessage: setCurrentMessage,
+        // handleCurrentDate: setCurrentDate
       })}>
       <View style={styles.container}>
         <View style={styles.lefContainer}>
-          <Image source={{ uri: 'https://jjack.s3.ap-northeast-2.amazonaws.com/1F57B15E-ED29-4F1D-898C-2151CD64E6E4.jpg' }} style={styles.avatar} />
+          <Image source={{ uri: otherUser.picture }} style={styles.avatar} />
 
           <View style={styles.midContainer}>
-            <Text style={styles.username}>{otherUsername}</Text>
+            <Text style={styles.username}>{otherUser.username}</Text>
             <Text
               numberOfLines={2}
               style={styles.lastMessage}>
-              {chat.length
-                ? `${chat[chat.length - 1].message}`
-                : ""}
+              {currentMessage}
             </Text>
           </View>
 
         </View>
 
         <Text style={styles.time}>
-          {chat.length && moment(chat[chat.length - 1].createdAt).format("DD/MM/YYYY")}
+          {chat.length && moment(currentDate).format("DD/MM/YYYY")}
         </Text>
       </View>
     </TouchableWithoutFeedback>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacit, FlatList, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
 import ChatMessage from '../components/ChatMessage';
 import {
@@ -16,12 +16,13 @@ import { getChatting } from '../config/api';
 const ChatScreen = ({ route }) => {
   const { _id } = useSelector(state => state.user.userData);
   // const { waitingMatch, successMatch } = useSelector(state => state.user);
-  const { id, name } = route.params
+  const { id, name } = route.params// handleCurrentMessage, handleCurrentDate
   const matchId = id;
   const partnerName = name;
 
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const messageList = useRef(null);
 
   useEffect(() => {
     const getChatInfo = async () => {
@@ -35,6 +36,13 @@ const ChatScreen = ({ route }) => {
 
     return () => socket.off('join chat room');
   }, []);
+
+  // useEffect(() => {
+  //   if (messages.length) {
+  //     handleCurrentMessage(messages[messages.length - 1].message);
+  //     handleCurrentDate(messages[messages.length - 1].createdAt);
+  //   }
+  // }, [messages]);
 
   useEffect(() => {
     socket.on('recieve message', newChat => {
@@ -57,6 +65,8 @@ const ChatScreen = ({ route }) => {
   return (
     <View style={{ width: '100%', height: '100%' }}>
       <FlatList
+        ref={messageList}
+        onContentSizeChange={() => messageList.current.scrollToEnd()}
         keyExtractor={chat => chat._id}
         data={messages}
         renderItem={({ item }) => <ChatMessage messageInfo={item} userId={_id} partnerName={partnerName} />}

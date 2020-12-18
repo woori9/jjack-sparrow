@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
-import CalenderScreen from '../screens/CalendarScreen';
 import DrawerContent from '../screens/DrawerContent';
 import { Ionicons } from '@expo/vector-icons';
 import ReviewScreen from '../screens/ReviewScreen';
@@ -14,6 +13,7 @@ import { PetProfileStackScreen, UserProfileStackScreen } from './stacks/ProfileS
 import AuthStackScreen from './stacks/AuthStack';
 import AddressStackScreen from './stacks/AddressStack';
 import ChatStackScreen from './stacks/ChatStack';
+import CalenderStackScreen from './stacks/CalenderStack'
 import { Image } from 'react-native';
 
 const Navigation = () => {
@@ -39,7 +39,7 @@ const Navigation = () => {
               </Ionicons>),
             headerRight: () => (
               <Image source={require('../assets/lovebird.png')}
-                style={{ flex: 1, alignSelf:'flex-end', height: 40, width: 40, marginRight: 10 }}
+                style={{ flex: 1, alignSelf: 'flex-end', height: 40, width: 40, marginRight: 10 }}
               />
             )
           })}
@@ -60,14 +60,14 @@ const Navigation = () => {
           component={HomeStackScreen}
           options={{
             tabBarLabel: 'Home',
-            tabBarIcon: ({ color }) => <Ionicons name='ios-home' size={28} color="green" />
+            tabBarIcon: ({ color }) => <Ionicons name='ios-home' size={28} color="#52575D" />
           }} />
         <Tabs.Screen
           name="Calendar"
-          component={CalenderScreen}
+          component={CalenderStackScreen}
           options={{
             tabBarLabel: 'Calender',
-            tabBarIcon: ({ color }) => <Ionicons name='ios-calendar' size={28} color="green" />
+            tabBarIcon: ({ color }) => <Ionicons name='ios-calendar' size={28} color="#52575D" />
           }}
         />
         <Tabs.Screen
@@ -75,7 +75,7 @@ const Navigation = () => {
           component={MatchStackScreen}
           options={{
             tabBarLabel: 'Match',
-            tabBarIcon: ({ color }) => <Ionicons name='md-people' size={28} color="green" />
+            tabBarIcon: ({ color }) => <Ionicons name='md-people' size={28} color="#52575D" />
           }}
         />
         <Tabs.Screen
@@ -83,7 +83,7 @@ const Navigation = () => {
           component={ChatStackScreen}
           options={{
             tabBarLabel: 'Chat',
-            tabBarIcon: ({ color }) => <Ionicons name='ios-chatboxes' size={28} color="green" />
+            tabBarIcon: ({ color }) => <Ionicons name='ios-chatboxes' size={28} color="#52575D" />
           }} />
       </Tabs.Navigator>
     );

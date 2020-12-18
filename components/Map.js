@@ -13,7 +13,9 @@ const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby, resp
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text> 현재 위치를 가져오는 중..</Text>
     </View>
-  )
+  );
+
+  console.log('$$$', pendingsNearby)
 
   const _map = useRef(null);
   const _scrollView = useRef(null);

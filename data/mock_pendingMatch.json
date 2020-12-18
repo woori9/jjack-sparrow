@@ -2,18 +2,22 @@
   "petsitter": null,
   "customer": {
     "_id": 1,
-    "pet": [{
-      "name": "올리브",
-      "species": "모란"
-    }],
     "address": {
       "description": "안양시 어딘가",
       "location": {
-        "lat": 37.4055699682797,
-        "lng": 126.971472162356
+        "lat": 37.50700437512232,
+        "lng": 127.06620993632649
       }
-    }
+    },
+    "username": "다람"
   },
+  "pet": [{
+    "name": "포포",
+    "species": "코카투",
+    "sex": "male",
+    "description": "매우 활발",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/814DBC19-5BE0-4F83-8026-DF104B98A7E0.jpg"
+  }],
   "status": 1,
   "dateAndTime": "April 18th 2020 15:00"
 },
@@ -22,17 +26,25 @@
   "customer": {
     "_id": 2,
     "pet": [{
-      "name": "머브",
+      "name": "머브1",
       "species": "모란"
     }],
     "address": {
       "description": "과천시 어딘가",
       "location": {
-        "lat": 37.4103294796877,
-        "lng": 126.972843321778
+        "lat": 37.4989724679362,
+        "lng": 127.05452943815322
       }
-    }
+    },
+    "username": "wrh95"
   },
+  "pet": [{
+    "name": "코코",
+    "species": "코뉴어",
+    "sex": "female",
+    "description": "밥을 많이 먹어요",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/45B3E216-3879-483D-B21C-B9620CD6A0E8.jpg"
+  }],
   "status": 1,
   "dateAndTime": "April 18th 2020 15:00"
 },
@@ -41,17 +53,25 @@
   "customer": {
     "_id": 2,
     "pet": [{
-      "name": "머브11",
+      "name": "올리브2",
       "species": "모란"
     }],
     "address": {
       "description": "동편마을4단지아파트",
       "location": {
-        "lat": 37.408458,
-        "lng": 126.969206
+        "lat": 37.505186765508626,
+        "lng": 127.05255067463203
       }
-    }
+    },
+    "username": "hwr95"
   },
+  "pet": [{
+    "name": "수박",
+    "species": "모란앵무",
+    "sex": "male",
+    "description": "겁이 많아요",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/3D363A29-5BCD-43F3-8243-805D2C4EBF4B.jpg"
+  }],
   "status": 1,
   "dateAndTime": "April 18th 2020 15:00"
 },
@@ -66,11 +86,19 @@
     "address": {
       "description": "숲길",
       "location": {
-        "lat": 37.410917,
-        "lng": 126.966600
+        "lat": 37.49990901003358,
+        "lng": 127.05814797057683
       }
-    }
+    },
+    "username": "woori9"
   },
+  "pet": [{
+    "name": "비비",
+    "species": "사랑앵무",
+    "sex": "female",
+    "description": "겁이 많지만 순해요",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/457DFEBF-F166-4EDF-8EB0-07F770C2405D.jpg"
+  }],
   "status": 1,
   "dateAndTime": "April 18th 2020 15:00"
 },
@@ -80,16 +108,24 @@
     "_id": 2,
     "pet": [{
       "name": "머브33",
-      "species": "모란"
+      "species": "모란앵무 버터컵"
     }],
     "address": {
       "description": "일동로204번길",
       "location": {
-        "lat": 37.405616,
-        "lng": 126.967735
+        "lat": 37.51012121332876,
+        "lng": 127.0614101841811
       }
-    }
+    },
+    "username": "woorihan9"
   },
+  "pet": [{
+    "name": "눈송",
+    "species": "모란앵무 버터컵",
+    "sex": "male",
+    "description": "잠을 많이 자요",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/C0659117-28EA-46B7-A40A-16F00C75C355.jpg"
+  }],
   "status": 1,
   "dateAndTime": "April 18th 2020 15:00"
 }]

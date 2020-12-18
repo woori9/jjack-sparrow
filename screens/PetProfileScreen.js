@@ -70,6 +70,11 @@ const PetProfileScreen = () => {
     dispatch(addUserPet(registeredPet));
     setForm(initialForm);
     setImageInfo(null);
+
+    Alert.alert(
+      'Success',
+      '성공적으로 반려동물 정보가 등록되었습니다.',
+      [{ text: 'Okay' }]);
   };
 
   const renderInner = () => {
@@ -81,7 +86,7 @@ const PetProfileScreen = () => {
       <CustomButton
         color='#f4cbc5'
         title='Take Photo'
-        style={{ borderWidth: 1, borderColor: '#efb4b0'}}
+        style={{ borderWidth: 1, borderColor: '#efb4b0' }}
         submitHandler={async () => {
           const result = await takePicture();
           setImageInfo(result);
@@ -91,13 +96,13 @@ const PetProfileScreen = () => {
       <CustomButton
         color="#f4cbc5"
         title='Choose From Library'
-        style={{ borderWidth: 1, borderColor: '#efb4b0'}}
+        style={{ borderWidth: 1, borderColor: '#efb4b0' }}
         submitHandler={async () => {
           const result = await pickImage();
           setImageInfo(result);
           bottomSheetRef.current.snapTo(1);
         }} />
-      <CustomButton color="#fad3a8" style={{ borderWidth: 1, borderColor: '#ffb284'}} title="Cancel" submitHandler={() => bottomSheetRef.current.snapTo(1)} />
+      <CustomButton color="#fad3a8" style={{ borderWidth: 1, borderColor: '#ffb284' }} title="Cancel" submitHandler={() => bottomSheetRef.current.snapTo(1)} />
     </View>
   };
 
@@ -136,14 +141,14 @@ const PetProfileScreen = () => {
           />
 
           <View style={styles.validationText}>
-            {!isNameValid && <Text>빈칸을 채워주세요.</Text>}
+            {!isNameValid && <Text style={styles.text}>빈칸을 채워주세요.</Text>}
           </View>
         </View>
         <View style={styles.wrapper}>
 
           <Text style={styles.label}>성별</Text>
           <Picker
-            itemStyle={{ color: "blue", fontSize: 13, height: 50 }}
+            itemStyle={{ color: "#147EFB", fontSize: 15, height: 50 }}
             selectedValue={sex}
             style={styles.Picker}
             onValueChange={itemValue => onChangeHandler(itemValue, 'Sex')}>
@@ -162,7 +167,7 @@ const PetProfileScreen = () => {
           />
 
           <View style={styles.validationText}>
-            {!isSpeciesValid && <Text>빈칸을 채워주세요.</Text>}
+            {!isSpeciesValid && <Text style={styles.text}>빈칸을 채워주세요.</Text>}
           </View>
         </View>
 
@@ -175,10 +180,10 @@ const PetProfileScreen = () => {
             onChangeText={text => onChangeHandler(text, 'Species')}
             returnKeyType='next'>
           </TextInput>
-          <DateAndTimePicker form={form} setForm={setForm} />
           {/* <View style={styles.validationText}>
-            {!isBirthdayValid && <Text>빈칸을 채워주세요.</Text>}
+            {!isBirthdayValid && <Text style={styles.text}>빈칸을 채워주세요.</Text>}
           </View> */}
+          <DateAndTimePicker form={form} setForm={setForm} />
         </View>
 
         <View style={styles.wrapper}>
@@ -191,7 +196,7 @@ const PetProfileScreen = () => {
             returnKeyType='next'
           />
           <View style={styles.validationText}>
-            {!isWeightValid && <Text>빈칸을 채워주세요.</Text>}
+            {!isWeightValid && <Text style={styles.text}>빈칸을 채워주세요.</Text>}
           </View>
         </View>
         <View style={styles.wrapper}>
@@ -238,7 +243,7 @@ const styles = StyleSheet.create({
     width: '50%',
     height: 40,
     alignItems: 'center',
-    borderBottomColor: 'gray',
+    borderBottomColor: '#41444B',
     borderBottomWidth: 1,
     width: '93%'
   },
@@ -249,8 +254,7 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   validationText: {
-    flex: 1,
-    // backgroundColor: 'beige'
+    flex: 1
   },
   imagePreview: {
     flex: 1,
@@ -343,6 +347,11 @@ const styles = StyleSheet.create({
     width: 180,
     backgroundColor: 'white',
     marginTop: 10
+  },
+  text: {
+    color: 'maroon',
+    fontFamily: "HelveticaNeue",
+    fontSize: 13
   }
 });
 

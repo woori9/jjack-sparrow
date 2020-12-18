@@ -27,7 +27,7 @@ const MapScreen = ({ navigation }) => {
       const excluded = allPendings.filter(pending => pending.customer._id !== userData._id);
       const filtered = filterExpiredMatch(excluded);
       dispatch(updateAllPendingMatch(filtered));
-      //dispatch(updateAllPendingMatch(mockPending));////mock data inclue to redux pendingMatches
+      dispatch(updateAllPendingMatch(mockPending));////mock data inclue to redux pendingMatches
     })();
 
     socket.on('there is new pending match', ({ newMatchInfo }) => {

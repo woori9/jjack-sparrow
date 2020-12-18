@@ -47,8 +47,8 @@ const PastContent = ({ pastMatch, userId }) => {
             <View style={{ width: '90%' }}>
 
               <TextInput
-                style={{ backgroundColor: 'pink', borderWidth: 1, borderColor: '#ddd', padding: 10, fontSize: 18, borderRadius: 6, marginTop: 20 }}
-                placeholder='Rating (1-5)'
+                style={{ borderWidth: 1, borderColor: '#ddd', padding: 10, fontSize: 18, borderRadius: 6, marginTop: 20 }}
+                placeholder='점수 (1-5)'
                 onChangeText={formikProps.handleChange('rating')}
                 value={formikProps.values.rating}
                 keyboardType='numeric'
@@ -58,8 +58,8 @@ const PastContent = ({ pastMatch, userId }) => {
               <Text style={globalStyles.errorText}>{formikProps.touched.rating && formikProps.errors.rating}</Text>
 
               <TextInput
-                style={{ backgroundColor: 'pink', borderWidth: 1, borderColor: '#ddd', padding: 10, fontSize: 18, borderRadius: 6, marginTop: 20, height: '60%' }}
-                placeholder='Riview body'
+                style={{ borderWidth: 1, borderColor: '#ddd', padding: 10, fontSize: 18, borderRadius: 6, marginTop: 20, height: '60%' }}
+                placeholder='후기를 작성해주세요'
                 onChangeText={formikProps.handleChange('description')}
                 value={formikProps.values.description}
                 onBlur={formikProps.handleBlur('description')}
@@ -68,7 +68,19 @@ const PastContent = ({ pastMatch, userId }) => {
 
               <Text style={globalStyles.errorText}>{formikProps.touched.description && formikProps.errors.description}</Text>
 
-              <Button title='submit' color='maroon' onPress={formikProps.handleSubmit} />
+              <TouchableOpacity
+                onPress={formikProps.handleSubmit}
+                style={{ alignSelf: 'center', width: '60%',height: 40, alignItems: 'center', borderRadius: 15, borderWidth: 1, borderColor: "maroon" }}>
+                <Text style={{
+                  color: 'maroon',
+                  fontFamily: "HelveticaNeue",
+                  fontSize: 22,
+                  marginTop: 5
+                }}>
+                  submit
+                </Text>
+              </TouchableOpacity>
+              {/* <Button title='submit' color='maroon' onPress={formikProps.handleSubmit} /> */}
             </View>
           )}
         </Formik>
@@ -93,7 +105,7 @@ const PastContent = ({ pastMatch, userId }) => {
                 setTargetMatch(null);
               }}
             />
-            <Text style={{ marginLeft: 20 }}>후기 등록하기</Text>
+            <Text style={{ marginLeft: 20, fontFamily: "HelveticaNeue", color: "#52575D", fontSize: 20 }}>후기 등록하기</Text>
             <ReviewForm />
           </View>
         </TouchableWithoutFeedback>
@@ -114,7 +126,7 @@ const PastContent = ({ pastMatch, userId }) => {
                   <Text style={{ fontSize: 15, color: "#52575D" }}>완료</Text>
                 </TouchableOpacity>) : (
                   <TouchableOpacity
-                    style={{ backgroundColor: '#efb4b0', width: 100, height: 30, alignItems: 'center', padding: 6, borderRadius: 7  }}
+                    style={{ backgroundColor: '#efb4b0', width: 100, height: 30, alignItems: 'center', padding: 6, borderRadius: 7 }}
                     onPress={() => {
                       setModalOpen(true);
                       setTargetMatch(item._id);

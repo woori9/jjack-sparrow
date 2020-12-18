@@ -10,7 +10,7 @@ import { fetchToAddUserProfile, fetchTosavePhoto } from '../config/api';
 
 const UserProfileScreen = () => {
   const { userData } = useSelector(state => state.user);
-  const { username, address, email } = userData;
+  const { username, address, email, picture } = userData;
   const [imageInfo, setImageInfo] = useState(null);
   const bottomSheetRef = useRef();
 
@@ -37,7 +37,8 @@ const UserProfileScreen = () => {
         submitHandler={async () => {
           const result = await pickImage();
           setImageInfo(result);
-          const storedURL = await fetchTosavePhoto(userData._id, result);// 향후 user profile 이미지 저장 기능 추가하기
+          //const storedURL = await fetchTosavePhoto(userData._id, result);// 향후 user profile 이미지 저장 기능 추가하기
+          //console.log(storedURL)
           //await fetchToAddUserProfile(userData._id, storedURL);
           bottomSheetRef.current.snapTo(1);
         }} />
@@ -54,9 +55,13 @@ const UserProfileScreen = () => {
           <View style={styles.profileImage}>
             {imageInfo ?
               <Image source={{ uri: imageInfo.uri }} style={styles.image} ></Image> :
-              <View style={styles.profileImage}>
-                <Image source={require('../assets/lovebird.png')} style={styles.image} resizeMode="center"></Image>
-              </View>
+              (
+                picture ? (<View style={styles.profileImage}>
+                  <Image source={{ uri: picture }} style={styles.image} resizeMode="center"></Image>
+                </View>) : (<View style={styles.profileImage}>
+                  <Image source={require('../assets/lovebird.png')} style={styles.image} resizeMode="center"></Image>
+                </View>)
+              )
             }
           </View>
           <View style={styles.add}>

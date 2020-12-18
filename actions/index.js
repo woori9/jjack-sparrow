@@ -116,16 +116,6 @@ export const moveFromSuccessToPast = updatedMatch => {
   };
 };
 
-export const updateLastMessage = (matchId, chatInfo) => {
-  return {
-    type: CHANGE_LAST_MESSAGE,
-    payload: {
-      matchId,
-      chatInfo
-    }
-  };
-};
-
 export const updateReview = (matchId, review) => {//object form
   return {
     type: UPDATE_REVIEW,

@@ -14,12 +14,23 @@ const HomeScreen = ({ navigation }) => {
   const { waitingMatch, successMatch } = useSelector(state => state.user);
   const [reviews, setReviews] = useState([]);
 
+  // useEffect(() => {
+  //   (async () => {
+  //     const allReviews = await getReviews();
+  //     setReviews([...allReviews]);
+  //   })();
+  // }, []);
+
   useEffect(() => {
-    (async () => {
-      const allReviews = await getReviews();
-      setReviews([...allReviews]);
-    })();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      (async () => {
+        const allReviews = await getReviews();
+        setReviews([...allReviews]);
+      })();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     const expired = getExpiredPending(waitingMatch, userData._id, dispatch);
@@ -67,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
               <View style={{ width: width - 40, height: 200, marginTop: 20, marginBottom: 20 }}>
                 <Image
                   style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderRadius: 5, borderWidth: 1, borderColor: '#dddddd' }}
-                  source={{ uri: 'https://jjack.s3.ap-northeast-2.amazonaws.com/F5C4EBB8-FA13-4F76-845E-FBDD11AAE75D.jpg'}}
+                  source={{ uri: 'https://jjack.s3.ap-northeast-2.amazonaws.com/F5C4EBB8-FA13-4F76-845E-FBDD11AAE75D.jpg' }}
                 />
               </View>
             </View>
@@ -87,7 +98,7 @@ const HomeScreen = ({ navigation }) => {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
               >
-                {reviews.map((review, index) => <Card review={review} key={index}/>)}
+                {reviews.map((review, index) => <Card review={review} key={index} />)}
 
               </ScrollView>
             </View>
