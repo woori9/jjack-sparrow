@@ -10,6 +10,7 @@ import {
   Button,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Formik } from 'formik';
@@ -41,6 +42,12 @@ const PastContent = ({ pastMatch, userId }) => {
           onSubmit={async values => {
             const result = await registerReview(userId, targetMatch, values);
             dispatch(updateReview(targetMatch, result));
+            // Alert.alert(
+            //   '리뷰 등록',
+            //   `리뷰가 성공적으로 등록되었습니다`,
+            //   [{ text: 'Okay' }]
+            // );
+            setModalOpen(false);
           }}
         >
           {formikProps => (
@@ -70,7 +77,7 @@ const PastContent = ({ pastMatch, userId }) => {
 
               <TouchableOpacity
                 onPress={formikProps.handleSubmit}
-                style={{ alignSelf: 'center', width: '60%',height: 40, alignItems: 'center', borderRadius: 15, borderWidth: 1, borderColor: "maroon" }}>
+                style={{ alignSelf: 'center', width: '60%', height: 40, alignItems: 'center', borderRadius: 15, borderWidth: 1, borderColor: "maroon" }}>
                 <Text style={{
                   color: 'maroon',
                   fontFamily: "HelveticaNeue",

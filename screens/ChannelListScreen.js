@@ -10,7 +10,7 @@ const ChannelListScreen = ({ navigation }) => {
     <View style={styles.container}>
       <FlatList
         keyExtractor={match => match._id}
-        data={[...pastMatch,...successMatch]}
+        data={successMatch}
         renderItem={({ item }) => <ChatChannel navigation={navigation} item={item} userId={userData._id}/>}
       />
     </View>

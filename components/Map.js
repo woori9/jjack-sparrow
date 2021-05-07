@@ -63,7 +63,7 @@ const Map = ({ userData, myLocation, selectLocationHandler, pendingsNearby, resp
 
     const scale = mapAnimation.interpolate({
       inputRange,
-      outputRange: [1, 1.5, 1],
+      outputRange: [1, 1.7, 1],
       extrapolate: "clamp"
     });
 
