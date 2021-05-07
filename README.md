@@ -146,9 +146,9 @@ npm start
 
 ## Links
 
-- [Frontend Repository](https://github.com/Suri-Suri-Woori-Suri/TwoFaceTime-Frontend)
+- [Frontend Repository](https://github.com/woori9/jjack_sparrow_frontend)
 
-- [Backend Repository](https://github.com/Suri-Suri-Woori-Suri/TwoFaceTime-Backend)
+- [Backend Repository](https://github.com/woori9/jjack_sparrow_backend)
 
 - [Figma For Mock up](https://www.figma.com/file/8jGOgvPrArskeNV3d7j385/My-pet?node-id=0%3A10)
 
