@@ -1,0 +1,131 @@
+[{
+  "petsitter": null,
+  "customer": {
+    "_id": 1,
+    "address": {
+      "description": "안양시 어딘가",
+      "location": {
+        "lat": 37.411798,
+        "lng": 126.967496
+      }
+    },
+    "username": "다람"
+  },
+  "pet": [{
+    "name": "포포",
+    "species": "코카투",
+    "sex": "male",
+    "description": "매우 활발",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/814DBC19-5BE0-4F83-8026-DF104B98A7E0.jpg"
+  }],
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+},
+{
+  "petsitter": null,
+  "customer": {
+    "_id": 2,
+    "pet": [{
+      "name": "머브1",
+      "species": "모란"
+    }],
+    "address": {
+      "description": "과천시 어딘가",
+      "location": {
+        "lat": 37.40660511420234,
+        "lng": 126.97058837067829
+      }
+    },
+    "username": "wrh95"
+  },
+  "pet": [{
+    "name": "코코",
+    "species": "코뉴어",
+    "sex": "female",
+    "description": "밥을 많이 먹어요",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/45B3E216-3879-483D-B21C-B9620CD6A0E8.jpg"
+  }],
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+},
+{
+  "petsitter": null,
+  "customer": {
+    "_id": 2,
+    "pet": [{
+      "name": "올리브2",
+      "species": "모란"
+    }],
+    "address": {
+      "description": "동편마을4단지아파트",
+      "location": {
+        "lat": 37.41120706505199,
+        "lng": 126.97382847911334
+      }
+    },
+    "username": "hwr95"
+  },
+  "pet": [{
+    "name": "수박",
+    "species": "모란앵무",
+    "sex": "male",
+    "description": "겁이 많아요",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/3D363A29-5BCD-43F3-8243-805D2C4EBF4B.jpg"
+  }],
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+},
+{
+  "petsitter": null,
+  "customer": {
+    "_id": 2,
+    "pet": [{
+      "name": "머브22",
+      "species": "모란"
+    }],
+    "address": {
+      "description": "숲길",
+      "location": {
+        "lat": 37.41201756139474,
+        "lng": 126.96557530564215
+      }
+    },
+    "username": "woori9"
+  },
+  "pet": [{
+    "name": "비비",
+    "species": "사랑앵무",
+    "sex": "female",
+    "description": "겁이 많지만 순해요",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/457DFEBF-F166-4EDF-8EB0-07F770C2405D.jpg"
+  }],
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+},
+{
+  "petsitter": null,
+  "customer": {
+    "_id": 2,
+    "pet": [{
+      "name": "머브33",
+      "species": "모란앵무 버터컵"
+    }],
+    "address": {
+      "description": "일동로204번길",
+      "location": {
+        "lat": 37.40607917084874,
+        "lng": 126.96701505551164
+      }
+    },
+    "username": "woorihan9"
+  },
+  "pet": [{
+    "name": "눈송",
+    "species": "모란앵무 버터컵",
+    "sex": "male",
+    "description": "잠을 많이 자요",
+    "picture": "https://jjack.s3.ap-northeast-2.amazonaws.com/C0659117-28EA-46B7-A40A-16F00C75C355.jpg"
+  }],
+  "status": 1,
+  "dateAndTime": "April 18th 2020 15:00"
+}]
